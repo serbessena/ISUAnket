@@ -16,7 +16,7 @@ namespace ISUAnket.EntityLayer.Entities
         [StringLength(100)]
         public string Ad { get; set; }
         [StringLength(2000)]
-        public string? Link1 { get; set; }
+        public string? Link { get; set; }
         public DateTime BaslangicTarihi { get; set; }
         public DateTime BitisTarihi { get; set; }
         public AnketDurumuEnum AnketDurumu { get; set; }
