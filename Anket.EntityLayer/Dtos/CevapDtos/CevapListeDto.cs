@@ -11,7 +11,6 @@ namespace ISUAnket.EntityLayer.Dtos.CevapDtos
     public class CevapListeDto
     {
         public int Id { get; set; }
-        //public string IpAdress { get; set; }
 
         [Display(Name = "Çalışma Birimi")]
         public int Birim { get; set; }
@@ -22,8 +21,10 @@ namespace ISUAnket.EntityLayer.Dtos.CevapDtos
         [Display(Name = "Cevaplanma Tarihi")]
         public DateTime CevapTarihi { get; set; }
 
-        [Display(Name = "Bağlı olduğu soru")]
+        [Display(Name = "Bağlı Olduğu Soru ID")]
         public int SoruId { get; set; }
-        public Soru Soru { get; set; }
+
+        [Display(Name = "Soru Metni")]
+        public string SoruMetni { get; set; } // Soru objesi yerine, sade bir alan
     }
 }

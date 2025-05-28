@@ -21,10 +21,10 @@ namespace ISUAnket.EntityLayer.Entities
         public DateTime BitisTarihi { get; set; }
         public AnketDurumuEnum AnketDurumu { get; set; }
         public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
-        public int OlusturanKullanici { get; set; }
-        // public AppUser AppUser{ get; set; }
-        public int? DuzenleyenKullanici { get; set; }
-        // public AppUser? AppEditedUser { get; set; }
+        public int OlusturanKullaniciId { get; set; }
+        public Kullanici OlusturanKullanici { get; set; }
+        public int? DuzenleyenKullaniciId { get; set; }
+        public Kullanici? DuzenleyenKullanici { get; set; }
         public DateTime? DuzenlenmeTarihi { get; set; }
         public bool AktifMi { get; set; }
         public List<Soru> Sorular { get; set; }

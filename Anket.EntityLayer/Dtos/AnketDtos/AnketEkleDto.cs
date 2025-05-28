@@ -20,7 +20,7 @@ namespace ISUAnket.EntityLayer.Dtos.AnketDtos
         public string? Link { get; set; }
 
         [Required(ErrorMessage = "Başlangıç Tarihi boş geçilemez.")]
-       
+
         public DateTime BaslangicTarihi { get; set; }
 
         [Required(ErrorMessage = "Bitiş Tarihi boş geçilemez.")]
@@ -32,14 +32,9 @@ namespace ISUAnket.EntityLayer.Dtos.AnketDtos
 
         [Display(Name = "Oluşturan Kullanıcı")]
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanıcı{ get; set; }
-
-        [Display(Name = "Oluşturma Tarihi")]
-        public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
+        public Kullanici OlusturanKullanıcı { get; set; }
 
         [Display(Name = "Aktif mi ?")]
         public bool AktifMi { get; set; }
-
-        public List<Soru> Sorular { get; set; }
     }
 }

@@ -29,7 +29,6 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Düzenleyen Kullanıcı")]
         public int? DuzenleyenKullaniciId { get; set; }
-        public Kullanici? DuzenleyenKullanici { get; set; }
 
         [Display(Name = "Düzenleme Tarihi")]
         public DateTime? DuzenlenmeTarihi { get; set; }
@@ -41,6 +40,5 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Anket Adı")]
         public int? AnketId { get; set; }
-        public Anket? Anket { get; set; }
     }
 }

@@ -12,14 +12,17 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
     {
         [Display(Name = "TC Kimlik No")]
         public string TCKN { get; set; }
+
+        [Display(Name = "Ad")]
         public string Ad { get; set; }
+
+        [Display(Name = "Soyad")]
         public string Soyad { get; set; }
 
         [Display(Name = "Kullanıcı Adı")]
-        public string KulaniciAdi { get; set; }
+        public string KullaniciAdi { get; set; }
 
-        [Display(Name = "Rolü")]
-        public int RolId { get; set; }
-        public Rol Rol { get; set; }
+        [Display(Name = "Rol Adı")]
+        public string RolAdi { get; set; }
     }
 }

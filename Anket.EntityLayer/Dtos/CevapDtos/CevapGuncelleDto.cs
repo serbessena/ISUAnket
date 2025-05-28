@@ -10,10 +10,11 @@ namespace ISUAnket.EntityLayer.Dtos.CevapDtos
 {
     public class CevapGuncelleDto
     {
-        [Required(ErrorMessage = "Soru metni boş geçilemez.")]
+        [Required(ErrorMessage = "Çalışma birimi boş geçilemez.")]
         [Display(Name = "Çalışma Birimi")]
         public int Birim { get; set; }
 
+        [Required(ErrorMessage = "Verilen cevap boş geçilemez.")]
         [StringLength(600, ErrorMessage = "Verilen cevap 600 karakterden fazla olamaz")]
         [MinLength(4, ErrorMessage = "Verilen cevap için minimum 4 karakter girilmesi gerekmektedir.")]
         [Display(Name = "Verilen Cevap")]
@@ -22,8 +23,8 @@ namespace ISUAnket.EntityLayer.Dtos.CevapDtos
         [Display(Name = "Cevaplanma Tarihi")]
         public DateTime CevapTarihi { get; set; }
 
-        [Display(Name = "Bağlı olduğu soru")]
+        [Required(ErrorMessage = "Soru bilgisi boş geçilemez.")]
+        [Display(Name = "Bağlı Olduğu Soru")]
         public int SoruId { get; set; }
-        public Soru Soru { get; set; }
     }
 }

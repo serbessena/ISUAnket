@@ -40,10 +40,10 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
         [Display(Name = "Şifre")]
         [StringLength(200, ErrorMessage = "Şifre 200 karakterden fazla olamaz")]
         [MinLength(6, ErrorMessage = "Şifre için minimum 6 karakter girilmesi gerekmektedir.")]
-        public string Sifre { get; set; }
+        public string? Sifre { get; set; }
 
         [Display(Name = "Rolü")]
         public int RolId { get; set; }
-        public Rol Rol { get; set; }
+        public List<SelectListItem> Roller { get; set; }
     }
 }

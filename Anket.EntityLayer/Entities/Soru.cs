@@ -15,14 +15,14 @@ namespace ISUAnket.EntityLayer.Entities
 
         [StringLength(500)]
         public string SoruMetni { get; set; }
-        public SoruTipiEnum? SoruTipi { get; set; }
+        public SoruTipiEnum SoruTipi { get; set; }
         public string? SoruSecenekleri { get; set; }
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanici{ get; set; }
+        public Kullanici OlusturanKullanici { get; set; }
         public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
-        public int? DuzenleyenKullaniciId{ get; set; }
-        public Kullanici? DuzenleyenKullanici{ get; set; }
-        public DateTime? DuzenlenmeTarihi{ get; set; }
+        public int? DuzenleyenKullaniciId { get; set; }
+        public Kullanici? DuzenleyenKullanici { get; set; }
+        public DateTime? DuzenlenmeTarihi { get; set; }
         public bool AktifMi { get; set; }
         public bool? ZorunluMu { get; set; }
         public int? AnketId { get; set; }

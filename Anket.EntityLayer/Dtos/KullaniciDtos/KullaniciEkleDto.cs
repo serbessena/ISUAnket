@@ -17,8 +17,8 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
 
 
         [Required(ErrorMessage = "Ad alanı boş geçilemez.")]
-        [StringLength(100,ErrorMessage ="Ad 100 karakterden fazla olamaz")]
-        [MinLength(3,ErrorMessage ="Ad alanı için minimum 3 karakter girilmesi gerekmektedir.")]
+        [StringLength(100, ErrorMessage = "Ad 100 karakterden fazla olamaz")]
+        [MinLength(3, ErrorMessage = "Ad alanı için minimum 3 karakter girilmesi gerekmektedir.")]
         public string Ad { get; set; }
 
         [Required(ErrorMessage = "Soyad alanı boş geçilemez.")]
@@ -31,17 +31,19 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
         [Display(Name = "Kullanıcı Adı")]
         [StringLength(100, ErrorMessage = "Kullanıcı Adı 100 karakterden fazla olamaz")]
         [MinLength(2, ErrorMessage = "Soyad alanı için minimum 3 karakter girilmesi gerekmektedir.")]
-        public string KulaniciAdi { get; set; }
+        public string KullaniciAdi { get; set; }
 
 
         [Required(ErrorMessage = "Şifre alanı boş geçilemez.")]
         [Display(Name = "Şifre")]
-        [StringLength(200,ErrorMessage = "Şifre 200 karakterden fazla olamaz")]
+        [StringLength(200, ErrorMessage = "Şifre 200 karakterden fazla olamaz")]
         [MinLength(6, ErrorMessage = "Şifre için minimum 6 karakter girilmesi gerekmektedir.")]
         public string Sifre { get; set; }
 
         [Display(Name = "Rolü")]
         public int RolId { get; set; }
-        public Rol Rol { get; set; }
+
+        // (Opsiyonel) Dropdown için roller
+        public List<SelectListItem> Roller { get; set; }
     }
 }

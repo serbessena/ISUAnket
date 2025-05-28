@@ -12,10 +12,13 @@ namespace ISUAnket.EntityLayer.Dtos.RolDtos
     {
         public int Id { get; set; }
 
-        [Display(Name ="Rol Adı")]
+        [Display(Name = "Rol Adı")]
         public string RolAdi { get; set; }
 
-        [Display(Name ="Kullanıcı")]
+        public string KullaniciAdi { get; set; }
+        public string KullaniciSoyadi { get; set; }
+
+        [Display(Name = "Kullanıcı")]
         public List<Kullanici> Kullanicilar { get; set; }
     }
 }

@@ -13,6 +13,9 @@ namespace ISUAnket.EntityLayer.Entities
         [Key]
         public int Id { get; set; }
 
+        [StringLength(11)]
+        public string TCKN { get; set; }
+
         [StringLength(100)]
         public string Ad { get; set; }
 
@@ -22,13 +25,10 @@ namespace ISUAnket.EntityLayer.Entities
         [StringLength(100)]
         public string KulaniciAdi { get; set; }
 
-        [StringLength(11)]
-        public string TCKN { get; set; }
-
         [StringLength(200)]
         public string Sifre { get; set; }
 
-        public int RolId { get; set; }
-        public Rol Rol { get; set; }
+        public int? RolId { get; set; }
+        public Rol? Rol { get; set; }
     }
 }

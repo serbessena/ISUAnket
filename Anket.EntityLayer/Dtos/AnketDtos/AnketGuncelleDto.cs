@@ -34,21 +34,17 @@ namespace ISUAnket.EntityLayer.Dtos.AnketDtos
 
         [Display(Name = "Oluşturan Kullanıcı")]
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanıcı { get; set; }
 
-        [Display(Name = "Oluşturma Tarihi")]
-        public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
+        //[Display(Name = "Oluşturma Tarihi")]
+        //public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
 
         [Display(Name = "Düzenleyen Kullanıcı")]
         public int? DuzenleyenKullaniciId { get; set; }
-        public Kullanici? DuzenleyenKullanici { get; set; }
 
-        [Display(Name = "Düzenlenme Tarihi")]
-        public DateTime? DuzenlenmeTarihi { get; set; }
+        //[Display(Name = "Düzenlenme Tarihi")]
+        //public DateTime? DuzenlenmeTarihi { get; set; }
 
         [Display(Name = "Aktif mi ?")]
         public bool AktifMi { get; set; }
-
-        public List<Soru> Sorular { get; set; }
     }
 }

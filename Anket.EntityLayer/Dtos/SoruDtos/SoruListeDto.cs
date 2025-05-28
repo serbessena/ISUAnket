@@ -17,13 +17,18 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Oluşturan Kullanıcı")]
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanici { get; set; }
+
+        [Display(Name = "Oluşturan Kullanıcı Adı")]
+        public string OlusturanKullaniciAd { get; set; } 
+        public string OlusturanKullaniciSoyad { get; set; } 
 
         [Display(Name = "Aktif mi ?")]
         public bool AktifMi { get; set; }
 
         [Display(Name = "Ait Olduğu Anket")]
         public int? AnketId { get; set; }
-        public Anket? Anket { get; set; }
+
+        [Display(Name = "Anket Adı")]
+        public string? AnketAdi { get; set; } // örneğin "2025 Yılı Memnuniyet Anketi"
     }
 }

@@ -12,6 +12,7 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
     public class SoruDetayDto
     {
         public int Id { get; set; }
+
         [Display(Name = "Soru Metni")]
         public string SoruMetni { get; set; }
 
@@ -23,14 +24,18 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Oluşturan Kullanıcı")]
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanici { get; set; }
+
+        [Display(Name = "Oluşturan Kullanıcı Adı")]
+        public string? OlusturanKullaniciAdSoyad { get; set; }
 
         [Display(Name = "Oluşturma Tarihi")]
         public DateTime OlusturmaTarihi { get; set; }
 
         [Display(Name = "Düzenleyen Kullanıcı")]
         public int? DuzenleyenKullaniciId { get; set; }
-        public Kullanici? DuzenleyenKullanici { get; set; }
+
+        [Display(Name = "Düzenleyen Kullanıcı Adı")]
+        public string? DuzenleyenKullaniciAdSoyad { get; set; }
 
         [Display(Name = "Düzenleme Tarihi")]
         public DateTime? DuzenlenmeTarihi { get; set; }
@@ -43,7 +48,9 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Ait Olduğu Anket")]
         public int? AnketId { get; set; }
-        public Anket? Anket { get; set; }
+
+        [Display(Name = "Anket Adı")]
+        public string? AnketAdi { get; set; }
 
     }
 }

@@ -14,11 +14,11 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
         [Required(ErrorMessage = "Soru metni boş geçilemez.")]
         [StringLength(500, ErrorMessage = "Soru metni 500 karakterden fazla olamaz")]
         [MinLength(10, ErrorMessage = "Soru metni için minimum 10 karakter girilmesi gerekmektedir.")]
-        [Display(Name ="Soru Metni")]
+        [Display(Name = "Soru Metni")]
         public string SoruMetni { get; set; }
 
         [Required(ErrorMessage = "Soru tipi boş geçilemez.")]
-        [Display(Name ="Soru Tipi")]
+        [Display(Name = "Soru Tipi")]
         public SoruTipiEnum SoruTipi { get; set; }
 
         [Display(Name = "Soruya ait cevaplar")]
@@ -26,7 +26,8 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
 
         [Display(Name = "Oluşturan Kullanıcı")]
         public int OlusturanKullaniciId { get; set; }
-        public Kullanici OlusturanKullanici { get; set; }
+        public string OlusturanKullaniciAdi { get; set; }
+        public string OlusturanKullaniciSoyadi { get; set; }
 
         [Display(Name = "Oluşturma Tarihi")]
         public DateTime OlusturmaTarihi { get; set; } = DateTime.Now;
@@ -37,8 +38,8 @@ namespace ISUAnket.EntityLayer.Dtos.SoruDtos
         [Display(Name = " Zorunlu mu ?")]
         public bool? ZorunluMu { get; set; }
 
-        [Display(Name ="Anket Adı")]
+        [Display(Name = "Anket Adı")]
         public int? AnketId { get; set; }
-        public Anket? Anket { get; set; }
+        public string? AnketAdi { get; set; }
     }
 }
