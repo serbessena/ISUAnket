@@ -28,6 +28,8 @@ namespace ISUAnket.EntityLayer.Entities
         [StringLength(200)]
         public string Sifre { get; set; }
 
+        public bool AktifMi { get; set; } = true;
+
         public int? RolId { get; set; }
         public Rol? Rol { get; set; }
     }

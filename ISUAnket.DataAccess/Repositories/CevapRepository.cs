@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Repositories
 {
-    public class CevapRepository: GenericRepository<Cevap>, ICevapDal
+    public class CevapRepository: GenericRepository<Cevap>, ICevapRepository
     {
         public CevapRepository(ISUAnketContext context) : base(context)
         {

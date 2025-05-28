@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Anket.EntityLayer\ISUAnket.EntityLayer.csproj" />
+    <ProjectReference Include="..\ISUAnket.DataAccess\ISUAnket.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -16,6 +16,7 @@ namespace ISUAnket.EntityLayer.Entities
         [StringLength(600)]
         public string VerilenCevap { get; set; }
         public DateTime CevapTarihi { get; set; } = DateTime.Now;
+        public bool AktifMi { get; set; } = true;
         public int SoruId { get; set; }
         public Soru Soru { get; set; }
     }

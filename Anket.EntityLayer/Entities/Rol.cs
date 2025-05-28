@@ -10,6 +10,7 @@ namespace ISUAnket.EntityLayer.Entities
     {
         public int Id { get; set; }
         public string RolAdi { get; set; }
+        public bool AktifMi { get; set; } = true;
         public List<Kullanici> Kullanicilar { get; set; }
 
     }

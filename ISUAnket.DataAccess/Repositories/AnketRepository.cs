@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Repositories
 {
-    public class AnketRepository: GenericRepository<Anket>, IAnketDal
+    public class AnketRepository: GenericRepository<Anket>, IAnketRepository
     {
         public AnketRepository(ISUAnketContext context) : base(context)
         {

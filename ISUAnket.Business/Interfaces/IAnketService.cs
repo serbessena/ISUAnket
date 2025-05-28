@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ISUAnket.DataAccess.Interfaces
+namespace ISUAnket.Business.Interfaces
 {
-    public interface ICevapDal : IGenericDal<Cevap>
+    public interface IAnketService:IGenericService<Anket>
     {
     }
 }

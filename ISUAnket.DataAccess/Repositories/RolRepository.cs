@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Repositories
 {
-    public class RolRepository: GenericRepository<Rol>, IRolDal
+    public class RolRepository: GenericRepository<Rol>, IRolRepository
     {
         public RolRepository(ISUAnketContext context) : base(context)
         {

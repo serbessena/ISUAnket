@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Interfaces
 {
-    public interface IRolDal : IGenericDal<Rol>
+    public interface IKullaniciRepository : IGenericRepository<Kullanici>
     {
     }
 }

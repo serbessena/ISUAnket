@@ -23,7 +23,7 @@ namespace ISUAnket.EntityLayer.Entities
         public int? DuzenleyenKullaniciId { get; set; }
         public Kullanici? DuzenleyenKullanici { get; set; }
         public DateTime? DuzenlenmeTarihi { get; set; }
-        public bool AktifMi { get; set; }
+        public bool AktifMi { get; set; } = true;
         public bool? ZorunluMu { get; set; }
         public int? AnketId { get; set; }
         public Anket? Anket { get; set; }

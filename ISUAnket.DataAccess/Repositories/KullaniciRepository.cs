@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Repositories
 {
-    public class KullaniciRepository: GenericRepository<Kullanici>, IKullaniciDal
+    public class KullaniciRepository: GenericRepository<Kullanici>, IKullaniciRepository
     {
         public KullaniciRepository(ISUAnketContext context) : base(context)
         {

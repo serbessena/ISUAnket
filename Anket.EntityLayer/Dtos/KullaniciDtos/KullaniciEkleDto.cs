@@ -44,6 +44,6 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
         public int RolId { get; set; }
 
         // (Opsiyonel) Dropdown için roller
-        public List<SelectListItem> Roller { get; set; }
+        //public List<SelectListItem> Roller { get; set; }
     }
 }

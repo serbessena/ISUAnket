@@ -44,6 +44,6 @@ namespace ISUAnket.EntityLayer.Dtos.KullaniciDtos
 
         [Display(Name = "Rolü")]
         public int RolId { get; set; }
-        public List<SelectListItem> Roller { get; set; }
+        //public List<SelectListItem> Roller { get; set; }
     }
 }

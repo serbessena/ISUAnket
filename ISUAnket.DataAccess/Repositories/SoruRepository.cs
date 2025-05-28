@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Repositories
 {
-    public class SoruRepository: GenericRepository<Soru>, ISoruDal
+    public class SoruRepository: GenericRepository<Soru>, ISoruRepository
     {
         public SoruRepository(ISUAnketContext context) : base(context)
         {

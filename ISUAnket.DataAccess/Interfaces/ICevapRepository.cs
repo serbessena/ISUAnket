@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ISUAnket.DataAccess.Interfaces
 {
-    public interface IAnketDal : IGenericDal<Anket>
+    public interface ICevapRepository : IGenericRepository<Cevap>
     {
     }
 }
