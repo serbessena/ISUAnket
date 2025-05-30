@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Kullanici>
+@{
+    ViewData["Title"] = "Kullanici Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-action="KullaniciEkle" class="btn btn-outline-primary">Kullanıcı Ekle</a>
+
+<br />
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>TCKN</th>
+            <th>Kullanıcı Adı</th>
+            <th>Ad Soyad</th>
+            <th>Rol</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TCKN</td>
+                <td>@item.KulaniciAdi</td>
+                <td>@item.Ad @item.Soyad</td>
+                <td>
+                    @if (item.Rol != null)
+                    {
+                        <span class="badge bg-success">@item.Rol.RolAdi</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Rol atanmadı</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-outline-success btn-sm" asp-action="RolAta" asp-route-id="@item.Id">Rol Ata</a>
+                    <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id">Kullanıcı Düzenle</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -9,5 +9,10 @@ namespace ISUAnket.DataAccess.Interfaces
 {
     public interface IKullaniciRepository : IGenericRepository<Kullanici>
     {
+        /// <summary>
+        /// kullanıcıları ve bağlı olduğu rolleri liste şeklinde getirir
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Kullanici>> KullanicilaraGoreRolListesiAsync();
     }
 }

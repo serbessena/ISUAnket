@@ -1,0 +1,24 @@
+﻿@model Rol
+@{
+    ViewData["Title"] = "Rol Güncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-action="RolGuncelle" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="RolAdi"></label>
+        <input asp-for="RolAdi" class="form-control" />
+        <span asp-validation-for="RolAdi"></span>
+    </div>
+
+    <div class="form-group">
+        <a asp-controller="Rol" asp-action="RolListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+        <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
+    </div>
+
+</form>

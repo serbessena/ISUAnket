@@ -1,0 +1,31 @@
+﻿@model Kullanici
+@{
+    ViewData["Title"] = "Rol Ata";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-action="RolAta" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="KulaniciAdi"></label>
+        <input type="form-control" asp-for="KulaniciAdi" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Rol Seçin</label>
+        <select asp-for="RolId" class="form-control" asp-items="ViewBag.RollerListesi">
+            <option>Seçiniz</option>
+        </select>
+    </div>
+
+    <div class="form-group text-center">
+        <a asp-controller="Kullanici" asp-action="KullaniciListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+        <button type="submit" class="btn btn-outline-primary btn-sm">Rol Ata</button>
+    </div>
+    
+
+</form>

@@ -1,0 +1,45 @@
+﻿@model Kullanici
+@{
+    ViewData["Title"] = "Profil Düzenle";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="ProfilDuzenle" method="post" class="mt-4">
+
+    <input type="hidden" asp-for="Id" />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group mb-3">
+        <label asp-for="Ad"></label>
+        <input asp-for="Ad" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Soyad"></label>
+        <input asp-for="Soyad" class="form-control" />
+        <span asp-validation-for="Soyad" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="KulaniciAdi"></label>
+        <input asp-for="KulaniciAdi" class="form-control" />
+        <span asp-validation-for="KulaniciAdi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="TCKN"></label>
+        <input asp-for="TCKN" class="form-control" />
+        <span asp-validation-for="TCKN" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Profil" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

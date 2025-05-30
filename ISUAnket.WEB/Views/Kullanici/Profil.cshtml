@@ -1,0 +1,39 @@
+﻿@model Kullanici
+@{
+    ViewData["Title"] = "Kullanıcı Bilgileri";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<div class="card shadow p-4">
+    <dl class="row">
+        <dt class="col-sm-3">TCKN</dt>
+        <dd class="col-sm-9">@Model.TCKN</dd>
+
+        <dt class="col-sm-3">Ad</dt>
+        <dd class="col-sm-9">@Model.Ad</dd>
+
+        <dt class="col-sm-3">Soyad</dt>
+        <dd class="col-sm-9">@Model.Soyad</dd>
+
+        <dt class="col-sm-3">Kullanıcı Adı</dt>
+        <dd class="col-sm-9">@Model.KulaniciAdi</dd>
+
+        <dt class="col-sm-3">Aktif Mi?</dt>
+        <dd class="col-sm-9">
+            @(Model.AktifMi ? "Evet" : "Hayır")
+        </dd>
+
+        <dt class="col-sm-3">Oturum Açık mı?</dt>
+        <dd class="col-sm-9">
+            @(Model.OturumAcikMi ? "Evet" : "Hayır")
+        </dd>
+    </dl>
+
+    <div class="text-center mt-3">
+        <a asp-controller="Kullanici" asp-action="SifreDegistir" class="btn btn-outline-primary d-inline-block">Şifre Değiştir</a>
+        <a asp-controller="Kullanici" asp-action="ProfilDuzenle" asp-route-id="@Model.Id" class="btn btn-outline-secondary d-inline-block">Profili Düzenle</a>
+    </div>
+
+</div>
+

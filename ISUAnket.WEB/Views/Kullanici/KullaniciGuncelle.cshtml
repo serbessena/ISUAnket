@@ -1,0 +1,49 @@
+﻿@model Kullanici
+@{
+    ViewData["Title"] = "Kullanıcı Güncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-action="KullaniciGuncelle" method="post">
+    <input type="hidden" asp-for="Id" />
+
+
+    <div class="form-group mt-3">
+        <label asp-for="TCKN"></label>
+        <input class="form-control" asp-for="TCKN" />
+        <span asp-validation-for="TCKN" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group mt-3">
+        <label asp-for="Ad"></label>
+        <input class="form-control" asp-for="Ad" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="Soyad"></label>
+        <input class="form-control" asp-for="Soyad" />
+        <span asp-validation-for="Soyad" class="text-danger"></span>
+    </div>
+
+    
+
+    <div class="form-group mt-3">
+        <label  asp-for="RolId"></label>
+        <select class="form-control" asp-for="RolId" asp-items="ViewBag.RollerListesi"></select>
+        <span asp-validation-for="RolId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <a asp-controller="Kullanici" asp-action="KullaniciListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+        <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -12,9 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/isu.png" alt="Logo" style="height: 40px;" />
-                </a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ISUAnket.WEB</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,37 +25,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Rol" asp-action="RolListesi">Rol Listesi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="KullaniciListesi">Kullanıcı Listesi</a>
-                        </li>
-                    </ul>
-
-                    <ul class="navbar-nav">
-                        @if (Context.Session.GetString("KullaniciId") == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Kullanici" asp-action="Login">Giriş Yap</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Kullanici" asp-action="Register">Kayıt Ol</a>
-                            </li>
-                        }
-                        else
-                        {
-                            var kullaniciAdi = Context.Session.GetString("KullaniciAdi");
-                            <li class="nav-item">
-                                <span class="nav-link text-success">Merhaba, @kullaniciAdi</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Kullanici" asp-action="Profil">Bilgilerim</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-danger" asp-controller="Kullanici" asp-action="Logout">Çıkış Yap</a>
-                            </li>
-                        }
                     </ul>
                 </div>
             </div>

@@ -12,7 +12,8 @@ namespace ISUAnket.EntityLayer.Entities
         [Key]
         public int Id { get; set; }
         //public string IpAdress { get; set; }
-        public int Birim { get; set; }
+        public string? Birim { get; set; }
+
         [StringLength(600)]
         public string VerilenCevap { get; set; }
         public DateTime CevapTarihi { get; set; } = DateTime.Now;

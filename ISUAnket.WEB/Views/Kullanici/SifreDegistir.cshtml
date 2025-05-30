@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Şifre Değiştir";
+}
+
+<h2>Şifre Değiştir</h2>
+
+@if (ViewBag.Mesaj != null)
+{
+    <div class="alert alert-success">@ViewBag.Mesaj</div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<form asp-action="SifreDegistir" method="post">
+    <div class="form-group">
+        <label for="eskiSifre">Eski Şifre</label>
+        <input type="password" class="form-control" name="eskiSifre" required />
+    </div>
+
+    <div class="form-group">
+        <label for="yeniSifre">Yeni Şifre</label>
+        <input type="password" class="form-control" name="yeniSifre" required />
+    </div>
+
+    <br />
+
+    <a asp-controller="Kullanici" asp-action="Profil" class="btn btn-outline-danger btn-sm">Geri</a>
+
+    <button type="submit" class="btn btn-outline-primary btn-sm">Şifreyi Değiştir</button>
+</form>
+
+
+

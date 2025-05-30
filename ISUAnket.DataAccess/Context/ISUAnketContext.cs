@@ -10,9 +10,11 @@ namespace ISUAnket.DataAccess.Context
 {
     public class ISUAnketContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        
+
+        public ISUAnketContext(DbContextOptions<ISUAnketContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer("data source=BILGIISLEM03;Initial Catalog=ISUAnketDb;User Id=sa;Password=SenaDuru123;TrustServerCertificate=True;");
         }
 
         public DbSet<Anket> Anketler { get; set; }
