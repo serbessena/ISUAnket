@@ -24,9 +24,20 @@ namespace ISUAnket.Business.Managers
             return await _anketRepository.GetListAllAsync();
         }
 
-        public async Task<List<Anket>> GetAllServiceAsync(Expression<Func<Anket, bool>> predicate)
+        public async Task<List<Anket>> GetAllServiceAsync()
         {
-            return await _anketRepository.GetAllAsync(predicate);
+            return await _anketRepository.GetAllAsync(
+                a => a.AktifMi == true || a.AktifMi==false,
+                a => a.OlusturanKullanici
+            );
+        }
+
+        public async Task<List<Anket>> GetAllServiceAsync(Expression<Func<Anket, bool>> predicate, params Expression<Func<Anket, object>>[] includes)
+        {
+            return await _anketRepository.GetAllAsync(
+                            a => a.AktifMi == true,
+                            a => a.OlusturanKullanici 
+                        );
         }
 
         public async Task<Anket> GetByIdServiceAsync(int id)

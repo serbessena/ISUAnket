@@ -1,7 +1,10 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ISUAnket.WEB.Controllers
 {
@@ -23,25 +26,9 @@ namespace ISUAnket.WEB.Controllers
             return View(sonuc);
         }
 
-        public async Task<IActionResult> KullaniciGuncelle(int id)
-        {
-            var kullanici=await _kullaniciService.KullaniciProfilGetirAsync(id);
-
-            if (kullanici==null)
-            {
-                return NotFound("Kullanıcı bulunamadı. Lütfen tekrar deneyiniz!");
-            }
-
-            var roller=await _rolService.GetListAllServiceAsync();
-
-            ViewBag.RollerListesi = new SelectList(roller, "Id", "RolAdi", kullanici.RolId);
-
-            return View(kullanici);
-        }
-
         public async Task<IActionResult> KullaniciEkle()
         {
-            var roller = await _rolService.GetListAllServiceAsync();
+            var roller = await _rolService.AktifRolleriGetirServiceAsync();
 
             ViewBag.RollerListesi = new SelectList(roller, "Id", "RolAdi");
 
@@ -57,13 +44,29 @@ namespace ISUAnket.WEB.Controllers
             {
                 ModelState.AddModelError("", "Bu kullanıcı adı zaten kullanılıyor!");
                 
-                var roller=await _rolService.GetListAllServiceAsync();
+                var roller=await _rolService.AktifRolleriGetirServiceAsync();
                 ViewBag.RollerListesi = new SelectList(roller, "Id", "RolAdi");
 
                 return View(model);
             }
 
             return RedirectToAction("KullaniciListesi");
+        }
+
+        public async Task<IActionResult> KullaniciGuncelle(int id)
+        {
+            var kullanici = await _kullaniciService.KullaniciProfilGetirAsync(id);
+
+            if (kullanici == null)
+            {
+                return NotFound("Kullanıcı bulunamadı. Lütfen tekrar deneyiniz!");
+            }
+
+            var roller = await _rolService.AktifRolleriGetirServiceAsync();
+
+            ViewBag.RollerListesi = new SelectList(roller, "Id", "RolAdi", kullanici.RolId);
+
+            return View(kullanici);
         }
 
 
@@ -257,7 +260,7 @@ namespace ISUAnket.WEB.Controllers
                 return NotFound("Kullanıcı bulunamadı!");
             }
 
-            var roller = await _rolService.GetListAllServiceAsync();
+            var roller = await _rolService.AktifRolleriGetirServiceAsync();
 
             ViewBag.RollerListesi = new SelectList(roller, "Id", "RolAdi", kullanici.RolId);
 
@@ -277,6 +280,11 @@ namespace ISUAnket.WEB.Controllers
             return RedirectToAction("KullaniciListesi");
         }
 
+        public async Task<IActionResult> KullaniciDurumuDegistir(int id)
+        {
+            await _kullaniciService.ChangeActivePasiveStatusServiceAsync(id);
 
+            return RedirectToAction(nameof(KullaniciListesi));
+        }
     }
 }

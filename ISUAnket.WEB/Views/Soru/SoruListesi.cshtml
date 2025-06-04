@@ -1,0 +1,39 @@
+﻿@using ISUAnket.WEB.Models.Extensions
+@model IEnumerable<Soru>
+@{
+    ViewData["Title"] = "Soru Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-controller="Soru" asp-action="SoruEkle" class="btn btn-outline-primary btn-sm">Soru Ekle</a>
+
+<table class="table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>Anket</th> 
+            <th>Soru Metni</th>
+            <th>Soru Tipi</th>
+            <th>Zorunlu mu?</th>
+            <th>Aktif mi?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Anket.Ad</td>
+                <td>@item.SoruMetni.</td>
+                <td>@item.SoruTipi.GetDisplayName()</td>
+                <td>@(item.ZorunluMu==true ? "Evet" : "Hayır")</td>
+                <td>@(item.AktifMi ? "Aktif" : "Pasif")</td>
+                <td>
+                    <a asp-action="SoruGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Soru Düzenle</a>
+                    <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durum Değiştir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

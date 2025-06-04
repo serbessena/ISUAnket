@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,17 +23,30 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Rol" asp-action="RolListesi">Rol Listesi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Kullanici" asp-action="KullaniciListesi">Kullanıcı Listesi</a>
-                        </li>
+                        <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="yonetimDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Yönetim
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="yonetimDropdown">
+
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Rol" asp-action="RolListesi">Rol Listesi</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Kullanici" asp-action="KullaniciListesi">Kullanıcı Listesi</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Anket" asp-action="AnketListesi">Anket Listesi</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Soru" asp-action="SoruListesi">Soru Listesi</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        
+                        
                     </ul>
 
                     <ul class="navbar-nav">
@@ -71,7 +85,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - ISUAnket.WEB - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Isu Anket Projesi - <a asp-area="" asp-controller="Home" asp-action="Index">Ana sayfa</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

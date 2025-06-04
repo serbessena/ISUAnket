@@ -9,5 +9,7 @@ namespace ISUAnket.DataAccess.Interfaces
 {
     public interface IRolRepository : IGenericRepository<Rol>
     {
+        Task<List<Rol>> AktifRolleriGetirAsync();
+        Task<List<Rol>> PasifRolleriGetirAsync();
     }
 }

@@ -30,7 +30,7 @@ namespace ISUAnket.Business.Managers
             return await _kullaniciRepository.GetListAllAsync();
         }
 
-        public async Task<List<Kullanici>> GetAllServiceAsync(Expression<Func<Kullanici, bool>> predicate)
+        public async Task<List<Kullanici>> GetAllServiceAsync(Expression<Func<Kullanici, bool>> predicate, params Expression<Func<Kullanici, object>>[] includes)
         {
             return await _kullaniciRepository.GetAllAsync(predicate);
         }
@@ -97,7 +97,7 @@ namespace ISUAnket.Business.Managers
             return user;
         }
 
-        // ✅ Şifre Değiştirme
+        // Şifre Değiştirme
         public async Task<bool> SifreDegistirAsync(int kullaniciId, string eskiSifre, string yeniSifre)
         {
             var user = await _kullaniciRepository.GetByIdAsync(kullaniciId);

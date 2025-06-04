@@ -9,5 +9,7 @@ namespace ISUAnket.Business.Interfaces
 {
     public interface IRolService:IGenericService<Rol>
     {
+        Task<List<Rol>> AktifRolleriGetirServiceAsync();
+        Task<List<Rol>> PasifRolleriGetirServiceAsync();
     }
 }

@@ -1,0 +1,53 @@
+﻿@model Soru
+@{
+    ViewData["Title"] = "Soru Güncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-action="SoruGuncelle" method="post">
+
+    <input type="hidden" asp-for="Id"/>
+
+    <div class="form-group mt-3">
+        <label asp-for="AnketId"></label>
+        <select asp-for="AnketId" asp-items="ViewBag.AnketListesi" class="form-control"></select>
+        <span asp-validation-for="AnketId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="SoruMetni"></label>
+        <textarea asp-for="SoruMetni" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="SoruMetni"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="SoruTipi"></label>
+        <select asp-for="SoruTipi" asp-items="Html.GetEnumSelectList<SoruTipiEnum>()" class="form-control"></select>
+        <span asp-validation-for="SoruTipi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="ZorunluMu"></label>
+        <input type="checkbox" asp-for="ZorunluMu" />
+        <span asp-validation-for="ZorunluMu"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label asp-for="SoruSecenekleri"></label>
+        <textarea asp-for="SoruSecenekleri" class="form-control" rows="3" placeholder="Çoktan seçmeli için virgülle ayırın"></textarea>
+        <span asp-validation-for="SoruSecenekleri" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <a asp-controller="Soru" asp-action="SoruListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+        <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
+    </div>
+
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

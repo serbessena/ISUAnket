@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Anket>
+@{
+    ViewData["Title"] = "Anket Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-action="AnketEkle" class="btn btn-outline-primary btn-sm">Anket Ekle</a>
+
+<br />
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>Anket Adı</th>
+            <th>Anket Bağlantısı</th>
+            <th>Oluşturan Kullanıcı</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Anket Durumu</th>
+            <th>Aktif mi?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Ad</td>
+                <td>@item.Link</td>
+                <td>@(item.OlusturanKullanici != null ? item.OlusturanKullanici.Ad + " " + item.OlusturanKullanici.Soyad : "Kullanıcı bilgisi yok")</td>
+                <td>
+                    @if (item.OlusturmaTarihi != null)
+                    {
+                        <span class="badge bg-success">@item.OlusturmaTarihi.ToShortDateString()</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Tarih belirtilmedi</span>
+                    }
+                </td>
+                <td>
+                    @if (item.AnketDurumu == AnketDurumuEnum.Yayınlandı)
+                    {
+                        <span class="badge bg-success">Yayınlandı</span>
+                    }
+                    @if (item.AnketDurumu == AnketDurumuEnum.Taslak)
+                    {
+                        <span class="badge bg-warning">Taslak</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">İptal</span>
+                    }
+                </td>
+                <td>
+                    @if (item.AktifMi == true)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id">Anket Düzenle</a>
+                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durumu Değiştir</a>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

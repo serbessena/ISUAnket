@@ -1,0 +1,186 @@
+﻿@model Soru
+@using ISUAnket.EntityLayer.Enums
+
+
+@{
+    ViewData["Title"] = "Anket Soru";
+    int sayfa = (int)ViewBag.Sayfa;
+    int toplamSayfa = (int)ViewBag.ToplamSayfa;
+    int anketId = (int)ViewBag.AnketId;
+    var cevaplar = ViewBag.Cevaplar as Dictionary<string, string>;
+    string cevapKey = $"Cevap_{Model.Id}";
+    string cevapDegeri = cevaplar != null && cevaplar.ContainsKey(cevapKey) ? cevaplar[cevapKey] : "";
+}
+
+<h3>Soru @sayfa / @toplamSayfa</h3>
+
+@if (TempData["Hata"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Hata"]
+    </div>
+}
+
+<form asp-action="AnketDoldur" method="post">
+    <input type="hidden" name="anketId" value="@anketId" />
+    <input type="hidden" name="sayfa" value="@sayfa" />
+
+    <div class="form-group mb-3">
+        <label><strong>@Model.SoruMetni</strong> @if (Model.ZorunluMu)
+            {
+                <span class="text-danger">*</span>
+            }</label>
+
+        @switch (Model.SoruTipi)
+        {
+            case SoruTipiEnum.TekSatırMetin:
+                <input type="text" name="@cevapKey" class="form-control" value="@cevapDegeri" />
+                break;
+
+            case SoruTipiEnum.ÇokSatırMetin:
+                <textarea name="@cevapKey" class="form-control" rows="4">@cevapDegeri</textarea>
+                break;
+
+            case SoruTipiEnum.TekSeçimli:
+                var secenekler = Model.SoruSecenekleri?.Split(',') ?? new string[0];
+                foreach (var secenek in secenekler)
+                {
+                    var secenekTrim = secenek.Trim();
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="@cevapKey" value="@secenekTrim" @(cevapDegeri == secenekTrim ? "checked" : "") />
+                        <label class="form-check-label">@secenekTrim</label>
+                    </div>
+                }
+                break;
+
+            case SoruTipiEnum.ÇoktanSeçmeli:
+                var cokluSecenekler = Model.SoruSecenekleri?.Split(',') ?? new string[0];
+                var seciliDegerler = cevapDegeri?.Split(';') ?? new string[0];
+                foreach (var secenek in cokluSecenekler)
+                {
+                    var secenekTrim = secenek.Trim();
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="@cevapKey" value="@secenekTrim"
+                        @(seciliDegerler.Contains(secenekTrim) ? "checked" : "") />
+                        <label class="form-check-label">@secenekTrim</label>
+                    </div>
+                }
+                break;
+        }
+    </div>
+
+    <div class="d-flex justify-content-center gap-2 mt-4">
+        @if (sayfa > 1)
+        {
+            <a asp-action="AnketDoldur" asp-route-anketId="@anketId" asp-route-sayfa="@(sayfa - 1)" class="btn btn-outline-secondary">← Geri</a>
+        }
+        else
+        {
+            <span></span>
+        }
+
+        @if (sayfa < toplamSayfa)
+        {
+            <button type="submit" class="btn btn-primary" name="islem" value="ileri">İleri →</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success" name="islem" value="bitir">Bitir</button>
+        }
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @{
+    ViewData["Title"] = "Anket Soru";
+    int sayfa = (int)ViewBag.Sayfa;
+    int toplamSayfa = (int)ViewBag.ToplamSayfa;
+    int anketId = (int)ViewBag.AnketId;
+}
+
+<h3>Soru @sayfa / @toplamSayfa</h3>
+
+<form asp-controller="Home" asp-action="AnketDoldur" method="get">
+
+    <input type="hidden" name="anketId" value="@anketId" />
+
+    <div class="form-group mb-3">
+        <label>
+            <strong>@Model.SoruMetni</strong>
+            @if (Model.ZorunluMu)
+            {
+                <span class="text-danger">*</span>
+            }
+        </label>
+
+        @switch (Model.SoruTipi)
+        {
+            case SoruTipiEnum.TekSatırMetin:
+                <input type="text" name="Cevap_@Model.Id" class="form-control" />
+                break;
+
+            case SoruTipiEnum.ÇokSatırMetin:
+                <textarea name="Cevap_@Model.Id" class="form-control" rows="4"></textarea>
+                break;
+
+            case SoruTipiEnum.TekSeçimli:
+                if (!string.IsNullOrWhiteSpace(Model.SoruSecenekleri))
+                {
+                    var secenekler = Model.SoruSecenekleri.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var secenek in secenekler)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Cevap_@Model.Id" value="@secenek.Trim()" />
+                            <label class="form-check-label">@secenek.Trim()</label>
+                        </div>
+                    }
+                }
+                break;
+
+            case SoruTipiEnum.ÇoktanSeçmeli:
+                if (!string.IsNullOrWhiteSpace(Model.SoruSecenekleri))
+                {
+                    var secenekler = Model.SoruSecenekleri.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var secenek in secenekler)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="Cevap_@Model.Id" value="@secenek.Trim()" />
+                            <label class="form-check-label">@secenek.Trim()</label>
+                        </div>
+                    }
+                }
+                break;
+        }
+    </div>
+
+    <div class="d-flex justify-content-center gap-2 mt-4">
+        @if (sayfa > 1)
+        {
+            <a class="btn btn-outline-secondary btn-sm" asp-action="AnketDoldur" asp-route-anketId="@anketId" asp-route-sayfa="@(sayfa - 1)">← Geri</a>
+        }
+        else
+        {
+            <div></div>
+        }
+
+        @if (sayfa < toplamSayfa)
+        {
+            <a class="btn btn-outline-primary btn-sm" asp-action="AnketDoldur" asp-route-anketId="@anketId" asp-route-sayfa="@(sayfa + 1)">İleri →</a>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success">Bitir</button>
+        }
+    </div>
+</form> *@

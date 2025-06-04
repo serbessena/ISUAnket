@@ -1,5 +1,6 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.DataAccess.Interfaces;
+using ISUAnket.DataAccess.Repositories;
 using ISUAnket.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,21 @@ namespace ISUAnket.Business.Managers
             return await _soruRepository.GetByIdAsync(id);
         }
 
-        public Task<List<Soru>> GetAllServiceAsync(Expression<Func<Soru, bool>> predicate)
+        public async Task<List<Soru>> GetAllServiceAsync()
         {
-            throw new NotImplementedException();
+            return await _soruRepository.GetAllAsync(
+                a => a.AktifMi == true || a.AktifMi == false,
+                a => a.Anket,
+                a => a.OlusturanKullanici
+            );
+        }
+        
+        public async Task<List<Soru>> GetAllServiceAsync(Expression<Func<Soru, bool>> predicate, params Expression<Func<Soru, object>>[] includes)
+        {
+            return await _soruRepository.GetAllAsync(
+                             a => a.AktifMi == true,
+                             a => a.OlusturanKullanici
+                         );
         }
 
         public async Task AddServiceAsync(Soru entity)

@@ -9,5 +9,6 @@ namespace ISUAnket.Business.Interfaces
 {
     public interface IAnketService:IGenericService<Anket>
     {
+        Task<List<Anket>> GetAllServiceAsync();
     }
 }

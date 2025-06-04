@@ -25,7 +25,7 @@ namespace ISUAnket.Business.Managers
             return _cevapRepository.GetListAllAsync();
         }
 
-        public Task<List<Cevap>> GetAllServiceAsync(Expression<Func<Cevap, bool>> predicate)
+        public Task<List<Cevap>> GetAllServiceAsync(Expression<Func<Cevap, bool>> predicate, params Expression<Func<Cevap, object>>[] includes)
         {
             throw new NotImplementedException();
         }

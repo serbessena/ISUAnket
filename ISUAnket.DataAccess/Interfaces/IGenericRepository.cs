@@ -48,7 +48,7 @@ namespace ISUAnket.DataAccess.Interfaces
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Verinin aktiflik durumunu değiştirir (true/false toggle).

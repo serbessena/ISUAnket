@@ -1,0 +1,17 @@
+﻿@model List<(string SoruMetni, string Cevap)>
+@{
+    ViewData["Title"] = "Anket Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Anket Sonuçları</h3>
+
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item">
+            <strong>@item.SoruMetni:</strong> @item.Cevap
+        </li>
+    }
+</ul>
+

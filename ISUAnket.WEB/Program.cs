@@ -4,6 +4,7 @@ using ISUAnket.Business.Managers;
 using ISUAnket.DataAccess.Context;
 using ISUAnket.DataAccess.Interfaces;
 using ISUAnket.DataAccess.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -34,7 +35,21 @@ builder.Services.AddScoped<ISoruService, SoruManager>();
 builder.Services.AddScoped<ICevapRepository, CevapRepository>();
 builder.Services.AddScoped<ICevapService, CevapManager>();
 
-builder.Services.AddSession();
+//builder.Services.AddSession();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Kullanici/Login";
+        options.LogoutPath = "/Kullanici/Logout";
+    });
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddControllers().AddFluentValidation();
 

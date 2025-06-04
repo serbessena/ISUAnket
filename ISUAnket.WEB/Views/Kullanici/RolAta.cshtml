@@ -10,19 +10,19 @@
 
     <input type="hidden" asp-for="Id" />
 
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label asp-for="KulaniciAdi"></label>
         <input type="form-control" asp-for="KulaniciAdi" readonly />
     </div>
 
-    <div class="form-group">
-        <label>Rol Seçin</label>
+    <div class="form-group mt-3">
+        <label>Rol Seçin: </label>
         <select asp-for="RolId" class="form-control" asp-items="ViewBag.RollerListesi">
             <option>Seçiniz</option>
         </select>
     </div>
 
-    <div class="form-group text-center">
+    <div class="form-group text-center mt-3">
         <a asp-controller="Kullanici" asp-action="KullaniciListesi" class="btn btn-outline-danger btn-sm">İptal</a>
         <button type="submit" class="btn btn-outline-primary btn-sm">Rol Ata</button>
     </div>

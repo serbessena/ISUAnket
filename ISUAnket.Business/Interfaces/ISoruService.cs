@@ -9,5 +9,6 @@ namespace ISUAnket.Business.Interfaces
 {
     public interface ISoruService:IGenericService<Soru>
     {
+        Task<List<Soru>> GetAllServiceAsync();
     }
 }

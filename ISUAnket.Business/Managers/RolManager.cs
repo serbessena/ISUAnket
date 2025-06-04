@@ -24,7 +24,7 @@ namespace ISUAnket.Business.Managers
             return await _rolRepository.GetListAllAsync();
         }
 
-        public async Task<List<Rol>> GetAllServiceAsync(Expression<Func<Rol, bool>> predicate)
+        public async Task<List<Rol>> GetAllServiceAsync(Expression<Func<Rol, bool>> predicate, params Expression<Func<Rol, object>>[] includes)
         {
             return await _rolRepository.GetAllAsync(predicate);
         }
@@ -53,6 +53,15 @@ namespace ISUAnket.Business.Managers
         {
             await _rolRepository.ChangeActivePasiveStatusAsync(id);
         }
-        
+
+        public async Task<List<Rol>> AktifRolleriGetirServiceAsync()
+        {
+            return await _rolRepository.AktifRolleriGetirAsync();
+        }
+
+        public async Task<List<Rol>> PasifRolleriGetirServiceAsync()
+        {
+            return await _rolRepository.PasifRolleriGetirAsync();
+        }
     }
 }

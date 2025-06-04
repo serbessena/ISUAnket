@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Kullanici>
 @{
-    ViewData["Title"] = "Kullanici Listesi";
+    ViewData["Title"] = "Kullanıcı Listesi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,6 +17,7 @@
             <th>Kullanıcı Adı</th>
             <th>Ad Soyad</th>
             <th>Rol</th>
+            <th>Durum</th>
             <th></th>
         </tr>
     </thead>
@@ -38,7 +39,19 @@
                     }
                 </td>
                 <td>
+                    @if (item.AktifMi == true)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                </td>
+                <td>
                     <a class="btn btn-outline-success btn-sm" asp-action="RolAta" asp-route-id="@item.Id">Rol Ata</a>
+
+                    <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durumu Değiştir</a>
                     <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id">Kullanıcı Düzenle</a>
                 </td>
             </tr>

@@ -9,5 +9,6 @@ namespace ISUAnket.DataAccess.Interfaces
 {
     public interface IAnketRepository : IGenericRepository<Anket>
     {
+       
     }
 }
