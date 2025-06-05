@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Kullanıcı Listesi";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var rol = Context.Session.GetString("KullaniciRolu");
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
@@ -49,7 +51,11 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-outline-success btn-sm" asp-action="RolAta" asp-route-id="@item.Id">Rol Ata</a>
+                    @if (rol == "Süper Admin")
+                    {
+                        <a class="btn btn-outline-success btn-sm" asp-action="RolAta" asp-route-id="@item.Id">Rol Ata</a>
+                    }
+                    
 
                     <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durumu Değiştir</a>
                     <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id">Kullanıcı Düzenle</a>

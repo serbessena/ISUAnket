@@ -8,6 +8,8 @@
 
 <form asp-action="RolEkle" method="post">
 
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="form-group mt-3">
         <label asp-for="RolAdi"></label>
         <input asp-for="RolAdi" class="form-control" />
@@ -20,3 +22,7 @@
     </div>
 
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

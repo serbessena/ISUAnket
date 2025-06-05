@@ -147,6 +147,22 @@ public class HomeController : Controller
         return View(sonucListesi);
     }
 
+    public IActionResult Hata(int kod)
+    {
+        switch (kod)
+        {
+            case 403:
+                return View("Error403");
+            case 404:
+                return View("Error404");
+            case 500:
+                return View("Error500");
+            default:
+                return View("Error");
+        }
+
+    }
+
     /*******************************  Anket Soru sayfası sayfalar arası geçiş yapılıyor ama sorunun cevapları kaydedilmiyor *******************************************************************/
 
     //public async Task<IActionResult> AnketDoldur(int anketId, int sayfa = 1)

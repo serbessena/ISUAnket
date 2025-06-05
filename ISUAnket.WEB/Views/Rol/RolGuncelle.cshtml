@@ -8,6 +8,8 @@
 
 <form asp-action="RolGuncelle" method="post">
 
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
@@ -22,3 +24,7 @@
     </div>
 
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

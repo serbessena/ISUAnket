@@ -84,7 +84,7 @@ namespace ISUAnket.Business.Managers
         public async Task<Kullanici> LoginAsync(string kullaniciAdi, string sifre)
         {
             var kullanici = await _kullaniciRepository
-                                    .GetAllAsync(x => x.KulaniciAdi == kullaniciAdi && x.AktifMi);
+                                    .GetAllAsync(x => x.KulaniciAdi == kullaniciAdi && x.AktifMi,x=>x.Rol);
 
             var user = kullanici.FirstOrDefault();
             if (user == null || !VerifyPassword(sifre, user.Sifre))

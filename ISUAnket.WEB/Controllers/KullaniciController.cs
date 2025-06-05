@@ -150,6 +150,7 @@ namespace ISUAnket.WEB.Controllers
             //Sesssion işlemleri
             HttpContext.Session.SetInt32("KullaniciId", user.Id);
             HttpContext.Session.SetString("KullaniciAdi", user.KulaniciAdi);
+            HttpContext.Session.SetString("KullaniciRolu", user.Rol?.RolAdi ?? ""); // Rol adı ekle
 
             return RedirectToAction("Index", "Home");
         }

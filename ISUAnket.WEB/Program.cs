@@ -74,6 +74,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseExceptionHandler("/Home/Hata?kod=500");
+app.UseStatusCodePagesWithReExecute("/Home/Hata", "?kod={0}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

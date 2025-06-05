@@ -3,41 +3,52 @@
     ViewData["Title"] = "Kayıt Ol";
 }
 
-<h2>Kayıt Ol</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
 
 <form asp-action="Register" method="post">
-    <div class="form-group">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mt-3">
         <label asp-for="TCKN"></label>
         <input asp-for="TCKN" class="form-control" />
         <span asp-validation-for="TCKN" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mt-3">
         <label asp-for="Ad"></label>
         <input asp-for="Ad" class="form-control" />
         <span asp-validation-for="Ad" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mt-3">
         <label asp-for="Soyad"></label>
         <input asp-for="Soyad" class="form-control" />
         <span asp-validation-for="Soyad" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mt-3">
         <label asp-for="KulaniciAdi"></label>
         <input asp-for="KulaniciAdi" class="form-control" />
         <span asp-validation-for="KulaniciAdi" class="text-danger"></span>
     </div>
-    <div class="form-group">
+
+    <div class="form-group mt-3">
         <label asp-for="Sifre"></label>
         <input asp-for="Sifre" class="form-control" type="password" />
         <span asp-validation-for="Sifre" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Kayıt Ol</button>
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-outline-success btn-sm">Kayıt Ol</button>
+        <p>
+            Zaten hesabınız var mı? <a asp-action="Login">Giriş Yap</a>
+        </p>
+    </div>
+    
 </form>
 
-<p>
-    Zaten hesabınız var mı? <a asp-action="Login">Giriş Yap</a>
-</p>
+
 
 @section Scripts {
     @{

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Şifre Değiştir";
 }
 
-<h2>Şifre Değiştir</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
 
 @if (ViewBag.Mesaj != null)
 {
@@ -21,6 +21,9 @@
 }
 
 <form asp-action="SifreDegistir" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="form-group">
         <label for="eskiSifre">Eski Şifre</label>
         <input type="password" class="form-control" name="eskiSifre" required />
@@ -39,4 +42,8 @@
 </form>
 
 
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

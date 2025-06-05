@@ -11,7 +11,11 @@ namespace ISUAnket.EntityLayer.Entities
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage ="Rol adı zorunludur!")]
         [Display(Name ="Rol Adı")]
+        [StringLength(50)]
+        [MaxLength(50,ErrorMessage ="Rol adı en fazla 50 karakter uzunluğunda olmalıdır!")]
+        [MinLength(5,ErrorMessage ="Rol adı en az 5 karakter uzunluğunda olmalıdır!")]
         public string RolAdi { get; set; }
 
         [Display(Name ="Durum")]
