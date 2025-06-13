@@ -1,11 +1,13 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
 using ISUAnket.EntityLayer.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISUAnket.WEB.Controllers
 {
+    //[Authorize(Roles = "SüperAdmin,Admin")]
     public class AnketController : Controller
     {
         private readonly IAnketService _anketService;

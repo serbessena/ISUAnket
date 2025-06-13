@@ -7,7 +7,7 @@
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
-<a asp-action="AnketEkle" class="btn btn-outline-primary btn-sm">Anket Ekle</a>
+<a asp-action="AnketEkle" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus"></i> Anket Ekle</a>
 
 <br />
 
@@ -65,8 +65,8 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id">Anket Düzenle</a>
-                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durumu Değiştir</a>
+                    <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id"><i class="fa-solid fa-edit"></i> Anket Düzenle</a>
+                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durumu Değiştir</a>
                     
                 </td>
             </tr>

@@ -6,6 +6,7 @@ using ISUAnket.DataAccess.Interfaces;
 using ISUAnket.DataAccess.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,12 @@ builder.Services.AddScoped<ISoruService, SoruManager>();
 builder.Services.AddScoped<ICevapRepository, CevapRepository>();
 builder.Services.AddScoped<ICevapService, CevapManager>();
 
+builder.Services.AddScoped<IBirimRepository, BirimRepository>();
+builder.Services.AddScoped<IBirimService, BirimManager>();
+
+//eppluss lisansýz kullaným için ISU takma adý kullanýldý. Farklý bir adda kullanýlabilir
+ExcelPackage.License.SetNonCommercialPersonal("ISU");
+
 //builder.Services.AddSession();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -43,6 +50,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Kullanici/Login";
         options.LogoutPath = "/Kullanici/Logout";
     });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddSession(options =>
 {

@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewData["Title"] = "İstatistikler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* <h1>Index</h1>
+
+<div class="card text-bg-light mb-3" style="max-width: 18rem;">
+    <div class="card-header">Header</div>
+    <div class="card-body">
+        <h5 class="card-title">Light card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+    </div>
+</div> *@
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">@ViewData["Title"]</h1>
+
+    <div class="row">
+
+        @* toplam rol sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Rol Sayısı: @ViewBag.ToplamRolSayisi</h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+
+        @* Admin kullanıcı sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">Admin Kullanıcı Sayısı: @ViewBag.AdminKullaniciSayisi</h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+
+        @* Süper Admin Kullanıcı Sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Süper Admin Kullanıcı Sayısı: @ViewBag.SuperAdminKullaniciSayisi</h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        @* toplam anket sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Anket</h5>
+                    <p class="card-text">@ViewBag.AnketSayisi</p>
+                </div>
+            </div>
+        </div>
+
+        @* Aktif Anket Sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Aktif Anket</h5>
+                    <p class="card-text">@ViewBag.AktifAnketSayisi</p>
+                </div>
+            </div>
+        </div>
+
+        @* Pasif Anket Sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Pasif Anket</h5>
+                    <p class="card-text">@ViewBag.PasifAnketSayisi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        @* toplam soru sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Soru</h5>
+                    <p class="card-text">@ViewBag.ToplamSoruSayisi</p>
+                </div>
+            </div>
+        </div>
+
+        @* Aktif Soru Sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Aktif Soru</h5>
+                    <p class="card-text">@ViewBag.AktifSoruSayisi</p>
+                </div>
+            </div>
+        </div>
+
+        @* Pasif Soru Sayısı *@
+        <div class="col-md-4 mb-3">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Pasif Soru</h5>
+                    <p class="card-text">@ViewBag.PasifSoruSayisi</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Kullanıcı</h5>
+                    <p class="card-text">@ViewBag.KayitliKullaniciSayisi</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card border-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Sistemdeki Kullanıcı Sayısı</h5>
+                    <p class="card-text">@ViewBag.AktifKullaniciSayisi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

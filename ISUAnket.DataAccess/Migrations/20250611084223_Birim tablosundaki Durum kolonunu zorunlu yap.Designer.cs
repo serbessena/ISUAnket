@@ -4,6 +4,7 @@ using ISUAnket.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISUAnket.DataAccess.Migrations
 {
     [DbContext(typeof(ISUAnketContext))]
-    partial class ISUAnketContextModelSnapshot : ModelSnapshot
+    [Migration("20250611084223_Birim tablosundaki Durum kolonunu zorunlu yap")]
+    partial class BirimtablosundakiDurumkolonunuzorunluyap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,7 +88,7 @@ namespace ISUAnket.DataAccess.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("AktifMi")
+                    b.Property<bool>("Durum")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

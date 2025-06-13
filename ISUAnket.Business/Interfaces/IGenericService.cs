@@ -44,6 +44,8 @@ namespace ISUAnket.Business.Interfaces
         /// <param name="predicate"></param>
         /// <returns></returns>
         Task<List<T>> GetAllServiceAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+        
+        
 
         /// <summary>
         /// Verinin aktiflik durumunu değiştirir (true/false toggle).

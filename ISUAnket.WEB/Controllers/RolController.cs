@@ -1,9 +1,11 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISUAnket.WEB.Controllers
 {
+    //[Authorize(Roles = "SüperAdmin,Admin")]
     public class RolController : Controller
     {
         private readonly IRolService _rolService;

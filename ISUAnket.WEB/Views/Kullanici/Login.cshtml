@@ -9,26 +9,31 @@
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group mt-3">
-        <label asp-for="KullaniciAdi"></label>
-        <input asp-for="KullaniciAdi" class="form-control" />
-        <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
-    </div>
-    <div class="form-group mt-3">
-        <label asp-for="Sifre"></label>
-        <input asp-for="Sifre" class="form-control" type="password" />
-        <span asp-validation-for="Sifre" class="text-danger"></span>
-    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-    <div class="form-group mt-3">
-        <button type="submit" class="btn btn-outline-primary btn-sm">Giriş Yap</button>
+            <div class="form-group mt-3">
+                <label asp-for="KullaniciAdi"></label>
+                <input asp-for="KullaniciAdi" class="form-control" />
+                <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <label asp-for="Sifre"></label>
+                <input asp-for="Sifre" class="form-control" type="password" />
+                <span asp-validation-for="Sifre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3 text-center">
+                <button type="submit" class="btn btn-outline-primary btn-sm">Giriş Yap</button>
+                Hesabınız yok mu? <a asp-action="Register">Kayıt Ol</a>
+                
+            </div>
+
+        </div>
     </div>
     
 </form>
-
-<p>
-    Hesabınız yok mu? <a asp-action="Register">Kayıt Ol</a>
-</p>
 
 @section Scripts {
     @{

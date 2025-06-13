@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Cevap> 
+  
+@{
+    ViewData["Title"] = "Cevap Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    /* sayfalama işlemleri için */
+    int totalCount = (int)(ViewData["TotalCount"] ?? 0);
+    int pageSize = (int)(ViewData["PageSize"] ?? 10);
+    int currentPage = (int)(ViewData["CurrentPage"] ?? 1);
+    int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form asp-controller="Cevap" asp-action="ExportToExcel" method="post">
+    <button type="submit" class="btn btn-outline-success btn-sm mb-3"><i class="fa fa-file-excel-o"></i> Excel'e Aktar</button>
+</form>
+
+<form asp-controller="Cevap" asp-action="ExportToPdf" method="post">
+    <button type="submit" class="btn btn-outline-danger btn-sm mb-3"><i class="fa fa-file-pdf-o"></i> PDF'e Aktar</button>
+</form>
+
+<table class="table table-hover table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>Anket Adı</th>
+            <th>Soru</th>
+            <th>Verilen Cevaplar</th>
+            <th>Birim</th>
+            <th>Cevap Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model !=null)
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Soru?.Anket?.Ad</td>
+                    <td>@item.Soru?.SoruMetni</td>
+                    <td>@item.VerilenCevap</td>
+                    <td>@item.Birim?.Ad</td>
+                    <td>@item.CevapTarihi.ToShortDateString()</td>
+                </tr>
+                
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">Henüz kayıtlı cevap bulunmamaktadır.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- SAYFALAMA KISMI -->
+@if (totalPages > 1)
+{
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <!-- Önceki -->
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("CevapListesi", new { page = currentPage - 1 })">Önceki</a>
+                </li>
+
+                <!-- Sayfa numaraları -->
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("CevapListesi", new { page = i })">@i</a>
+                    </li>
+                }
+
+                <!-- Sonraki -->
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("CevapListesi", new { page = currentPage + 1 })">Sonraki</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

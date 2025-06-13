@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Tesekkurler";
+    Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
+}
+
+@if (TempData["Bilgi"] != null)
+{
+    <div class="alert alert-success text-center" id="bilgiMesaji" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 50%;">
+        @TempData["Bilgi"]
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            var mesaj = document.getElementById("bilgiMesaji");
+            if (mesaj) {
+                mesaj.style.transition = "opacity 0.5s";
+                mesaj.style.opacity = 0;
+                setTimeout(function () {
+                    mesaj.remove();
+                }, 500); 
+            }
+        }, 5000); // 5 saniye bekle
+    </script>
+}

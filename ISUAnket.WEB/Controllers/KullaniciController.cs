@@ -2,12 +2,14 @@
 using ISUAnket.EntityLayer.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace ISUAnket.WEB.Controllers
 {
+    //[Authorize(Roles = "SüperAdmin,Admin")]
     public class KullaniciController : Controller
     {
         private readonly IKullaniciService _kullaniciService;
@@ -100,11 +102,13 @@ namespace ISUAnket.WEB.Controllers
             return RedirectToAction(nameof(KullaniciListesi));
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(Kullanici model)
         {
@@ -125,11 +129,13 @@ namespace ISUAnket.WEB.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(string kullaniciAdi,string sifre)
         {
@@ -146,6 +152,7 @@ namespace ISUAnket.WEB.Controllers
 
                 return View();
             }
+
 
             //Sesssion işlemleri
             HttpContext.Session.SetInt32("KullaniciId", user.Id);

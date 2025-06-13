@@ -3,17 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using ISUAnket.WEB.Models;
 using ISUAnket.Business.Interfaces;
 using System.Text.Json;
+using ISUAnket.EntityLayer.Entities;
 namespace ISUAnket.WEB.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly ISoruService _soruService;
+    private readonly IBirimService _birimService;
+    private readonly ICevapService _cevapService;
 
-    public HomeController(ILogger<HomeController> logger, ISoruService soruService)
+    public HomeController(ILogger<HomeController> logger, ISoruService soruService, IBirimService birimService, ICevapService cevapService)
     {
         _logger = logger;
         _soruService = soruService;
+        _birimService = birimService;
+        _cevapService = cevapService;
     }
 
     public IActionResult Index()
@@ -21,9 +26,48 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Kvkk(int anketId = 1)
+    public async Task<IActionResult> BirimSec()
     {
+        var birimler = await _birimService.AktifBirimleriGetirServiceAsync(); // sadece aktif birimler gelsin
+        
+        
+        return View(birimler);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> BirimSec(int secilenBirimId)
+    {
+        var birim = await _birimService.GetByIdServiceAsync(secilenBirimId);
+        if (birim == null)
+        {
+            TempData["Hata"] = "Lütfen geçerli bir birim seçiniz.";
+            return RedirectToAction("BirimSec");
+        }
+
+        HttpContext.Session.SetInt32("SecilenBirimId", secilenBirimId);
+
+        return RedirectToAction("Kvkk", new { anketId = 1 });
+    }
+
+    public async Task<IActionResult> Kvkk(int anketId = 1)
+    {
+        var birimId = HttpContext.Session.GetInt32("SecilenBirimId");
+        if (birimId == null)
+        {
+            return RedirectToAction("BirimSec");
+        }
+
+        var birim = await _birimService.GetByIdServiceAsync(birimId.Value);
+
+        if (birim == null)
+        {
+            TempData["Hata"] = "Birim bulunamadı.";
+            return RedirectToAction("BirimSec");
+        }
+
         ViewBag.AnketId = anketId;
+        ViewBag.BirimAdi = birim.Ad;
+
         return View();
     }
 
@@ -33,7 +77,7 @@ public class HomeController : Controller
         if (!KvkkOnay)
         {
             TempData["Hata"] = "Devam etmek için KVKK onay kutusunu işaretlemeniz gerekir.";
-            return RedirectToAction("KVKK");
+            return RedirectToAction("Kvkk", new { anketId });
         }
 
         HttpContext.Session.SetString("KvkkOnay", "true");
@@ -88,7 +132,7 @@ public class HomeController : Controller
             return NotFound("Ankete ait soru bulunamadı.");
 
         int toplamSayfa = sorular.Count;
-        var seciliSoru = sorular[sayfa - 1]; // Sayfadaki soru
+        var seciliSoru = sorular[sayfa - 1]; // Sayfadaki soru adeti
 
         // Cevap formdan alınıyor
         string cevapKey = $"Cevap_{seciliSoru.Id}";
@@ -117,35 +161,84 @@ public class HomeController : Controller
 
     public async Task<IActionResult> AnketSonuc(int anketId)
     {
-        var cevaplar = HttpContext.Session.GetString("Cevaplar");
-        var cevapSozluk = string.IsNullOrEmpty(cevaplar)
+        var cevaplarJson = HttpContext.Session.GetString("Cevaplar");
+        var cevapSozluk = string.IsNullOrEmpty(cevaplarJson)
             ? new Dictionary<string, string>()
-            : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(cevaplar);
+            : JsonSerializer.Deserialize<Dictionary<string, string>>(cevaplarJson);
 
         var sorular = await _soruService.GetAllServiceAsync();
         if (sorular == null || !sorular.Any())
             return NotFound("Ankete ait soru bulunamadı.");
 
-        var sonucListesi = new List<(string SoruMetni, string Cevap)>(); // ViewModel gibi
+        var birimId = HttpContext.Session.GetInt32("SecilenBirimId");
+        if (birimId == null)
+            return RedirectToAction("BirimSec");
 
         foreach (var soru in sorular)
         {
             var key = $"Cevap_{soru.Id}";
-            if (cevapSozluk.TryGetValue(key, out var cevap) && !string.IsNullOrWhiteSpace(cevap))
+            if (cevapSozluk.TryGetValue(key, out var verilenCevap))
             {
-                sonucListesi.Add((soru.SoruMetni, cevap));
-            }
-            else
-            {
-                string cevapMetni = soru.ZorunluMu ? "Bu soru zorunlu ancak cevap girilmemiş." : "Cevap zorunlu olmadığı için cevap girilmedi.";
-                sonucListesi.Add((soru.SoruMetni, cevapMetni));
+                var cevap = new Cevap
+                {
+                    SoruId = soru.Id,
+                    VerilenCevap = verilenCevap,
+                    CevapTarihi = DateTime.Now,
+                    AktifMi = true,
+                    BirimId = birimId.Value
+                };
+
+                await _cevapService.AddServiceAsync(cevap);
             }
         }
 
+        // Session temizleme
         HttpContext.Session.Remove("Cevaplar");
+        HttpContext.Session.Remove("SecilenBirimId");
+        HttpContext.Session.Remove("KvkkOnay");
 
-        return View(sonucListesi);
+        
+        TempData["Bilgi"] = "Anketiniz başarıyla gönderildi!";
+
+        return RedirectToAction("Tesekkurler");
     }
+
+    public IActionResult Tesekkurler()
+    {
+        return View();
+    }
+
+    //public async Task<IActionResult> AnketSonuc(int anketId)
+    //{
+    //    var cevaplar = HttpContext.Session.GetString("Cevaplar");
+    //    var cevapSozluk = string.IsNullOrEmpty(cevaplar)
+    //        ? new Dictionary<string, string>()
+    //        : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(cevaplar);
+
+    //    var sorular = await _soruService.GetAllServiceAsync();
+    //    if (sorular == null || !sorular.Any())
+    //        return NotFound("Ankete ait soru bulunamadı.");
+
+    //    var sonucListesi = new List<(string SoruMetni, string Cevap)>();
+
+    //    foreach (var soru in sorular)
+    //    {
+    //        var key = $"Cevap_{soru.Id}";
+    //        if (cevapSozluk.TryGetValue(key, out var cevap) && !string.IsNullOrWhiteSpace(cevap))
+    //        {
+    //            sonucListesi.Add((soru.SoruMetni, cevap));
+    //        }
+    //        else
+    //        {
+    //            string cevapMetni = soru.ZorunluMu ? "Bu soru zorunlu ancak cevap girilmemiş." : "";
+    //            sonucListesi.Add((soru.SoruMetni, cevapMetni));
+    //        }
+    //    }
+
+    //    HttpContext.Session.Remove("Cevaplar");
+
+    //    return View(sonucListesi);
+    //}
 
     public IActionResult Hata(int kod)
     {

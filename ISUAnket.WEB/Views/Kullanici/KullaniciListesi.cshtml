@@ -8,11 +8,11 @@
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
-<a asp-action="KullaniciEkle" class="btn btn-outline-primary">Kullanıcı Ekle</a>
+<a asp-action="KullaniciEkle" class="btn btn-outline-primary"><i class="fa-solid fa-plus"></i> Kullanıcı Ekle</a>
 
 <br />
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive" id="basic-datatables">
     <thead>
         <tr>
             <th>TCKN</th>
@@ -55,12 +55,38 @@
                     {
                         <a class="btn btn-outline-success btn-sm" asp-action="RolAta" asp-route-id="@item.Id">Rol Ata</a>
                     }
-                    
 
-                    <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')">Durumu Değiştir</a>
-                    <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id">Kullanıcı Düzenle</a>
+                    <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id"><i class="fa-solid fa-edit"></i> Kullanıcı Düzenle</a>
+                    <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durumu Değiştir</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+
+    @* dataTable.js kullanımı *@
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({
+                "language": {
+                    "decimal": ",",
+                    "thousands": ".",
+                    "lengthMenu": "Sayfa başına _MENU_ kayıt göster",
+                    "zeroRecords": "Kayıt bulunamadı",
+                    "info": "_TOTAL_ kayıttan _START_ - _END_ arası gösteriliyor",
+                    "infoEmpty": "Kayıt yok",
+                    "infoFiltered": "(_MAX_ kayıt içinden filtrelendi)",
+                    "search": "Ara:",
+                    "paginate": {
+                        "first": "<<",
+                        "last": ">>",
+                        "next": ">",
+                        "previous": "<"
+                    }
+                }
+            });
+        });
+    </script>
+}

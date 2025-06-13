@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "KVKK Aydınlatma Metni";
     int anketId = ViewBag.AnketId ?? 1;
+    string birimAdi = ViewBag.BirimAdi as string; // Birimi değeri alındı
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }
 
@@ -9,6 +10,14 @@
 @if (TempData["Hata"] != null)
 {
     <div class="alert alert-danger">@TempData["Hata"]</div>
+}
+
+@* Seçilen Birimi gösterimi *@
+@if (!string.IsNullOrEmpty(birimAdi))
+{
+    <div class="alert alert-info">
+        <strong>Seçtiğiniz Birim:</strong> @birimAdi
+    </div>
 }
 
 <p>

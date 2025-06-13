@@ -39,10 +39,14 @@ namespace ISUAnket.EntityLayer.Entities
 
         [Display(Name ="Durum")]
         public bool AktifMi { get; set; } = true;
+
+        [Display(Name = "Zorunlu mu?")]
         public bool ZorunluMu { get; set; }
+
+        [Display(Name = "Anket")]
         public int? AnketId { get; set; }
 
-        [Display(Name ="Anket")]
+       
         public Anket? Anket { get; set; }
         public List<Cevap> Cevaplar { get; set; }
     }

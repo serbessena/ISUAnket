@@ -1,10 +1,12 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISUAnket.WEB.Controllers
 {
+    //[Authorize(Roles = "SüperAdmin,Admin")]
     public class SoruController : Controller
     {
         private readonly ISoruService _soruService;
@@ -108,6 +110,7 @@ namespace ISUAnket.WEB.Controllers
 
             mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value;
             mevcutSoru.DuzenlenmeTarihi = DateTime.Now;
+            mevcutSoru.SoruSecenekleri = model.SoruSecenekleri;
 
             await _soruService.UpdateServiceAsync(mevcutSoru);
 

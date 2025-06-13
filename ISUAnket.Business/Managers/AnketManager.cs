@@ -64,5 +64,6 @@ namespace ISUAnket.Business.Managers
         {
             await _anketRepository.ChangeActivePasiveStatusAsync(id);
         }
+
     }
 }

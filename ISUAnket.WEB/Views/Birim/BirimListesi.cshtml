@@ -1,22 +1,20 @@
-﻿@using ISUAnket.WEB.Models.Extensions
-@model IEnumerable<Soru>
+﻿@model IEnumerable<Birim>
 @{
-    ViewData["Title"] = "Soru Listesi";
+    ViewData["Title"] = "Birim Listesi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
-<a asp-controller="Soru" asp-action="SoruEkle" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus"></i> Soru Ekle</a>
+<a asp-action="BirimEkle" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus"></i> Birim Ekle</a>
 
-<table class="table table-responsive table-hover" id="basic-datatables">
+<br />
+
+<table class="table table-hover table-responsive" id="basic-datatables">
     <thead>
         <tr>
-            <th>Anket</th> 
-            <th>Soru Metni</th>
-            <th>Soru Tipi</th>
-            <th>Zorunlu mu?</th>
-            <th>Aktif mi?</th>
+            <th>Birim Adı</th>
+            <th>Durum</th>
             <th></th>
         </tr>
     </thead>
@@ -24,14 +22,20 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Anket.Ad</td>
-                <td>@item.SoruMetni</td>
-                <td>@item.SoruTipi.GetDisplayName()</td>
-                <td>@(item.ZorunluMu==true ? "Evet" : "Hayır")</td>
-                <td>@(item.AktifMi ? "Aktif" : "Pasif")</td>
+                <td>@item.Ad</td>
                 <td>
-                    <a asp-action="SoruGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="fa-solid fa-edit"></i> Soru Düzenle</a>
-                    <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durum Değiştir</a>
+                    @if (item.AktifMi == true)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    } 
+                </td>
+                <td>
+                    <a asp-action="BirimGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="fa-solid fa-edit"></i> Birim Düzenle</a>
+                    <a asp-action="BirimDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durumu Değiştir</a>
                 </td>
             </tr>
         }

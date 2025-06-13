@@ -2,6 +2,7 @@
 using ISUAnket.DataAccess.Interfaces;
 using ISUAnket.DataAccess.Repositories;
 using ISUAnket.EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace ISUAnket.Business.Managers
 
         public Task<List<Cevap>> GetAllServiceAsync(Expression<Func<Cevap, bool>> predicate, params Expression<Func<Cevap, object>>[] includes)
         {
-            throw new NotImplementedException();
+            return _cevapRepository.GetAllAsync(predicate, includes);
         }
 
         public async Task<Cevap> GetByIdServiceAsync(int id)
@@ -55,6 +56,7 @@ namespace ISUAnket.Business.Managers
         {
             await _cevapRepository.ChangeActivePasiveStatusAsync(id);
         }
+
         
     }
 }
