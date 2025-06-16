@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "KVKK Aydınlatma Metni";
-    int anketId = ViewBag.AnketId ?? 1;
+    //int anketId = ViewBag.AnketId ?? 1;
+    int anketId = ViewBag.AnketId != null ? (int)ViewBag.AnketId : 0;
     string birimAdi = ViewBag.BirimAdi as string; // Birimi değeri alındı
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
 }

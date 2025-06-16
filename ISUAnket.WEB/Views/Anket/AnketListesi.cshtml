@@ -18,6 +18,8 @@
             <th>Anket Bağlantısı</th>
             <th>Oluşturan Kullanıcı</th>
             <th>Oluşturulma Tarihi</th>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
             <th>Anket Durumu</th>
             <th>Aktif mi?</th>
             <th></th>
@@ -40,6 +42,8 @@
                         <span class="badge bg-danger">Tarih belirtilmedi</span>
                     }
                 </td>
+                <td>@item.BaslangicTarihi.ToShortDateString()</td>
+                <td>@item.BitisTarihi.ToShortDateString()</td>
                 <td>
                     @switch (item.AnketDurumu)
                     {

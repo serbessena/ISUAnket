@@ -4,6 +4,7 @@ using ISUAnket.WEB.Models;
 using ISUAnket.Business.Interfaces;
 using System.Text.Json;
 using ISUAnket.EntityLayer.Entities;
+using ISUAnket.EntityLayer.Enums;
 namespace ISUAnket.WEB.Controllers;
 
 public class HomeController : Controller
@@ -12,13 +13,15 @@ public class HomeController : Controller
     private readonly ISoruService _soruService;
     private readonly IBirimService _birimService;
     private readonly ICevapService _cevapService;
+    private readonly IAnketService _anketService;
 
-    public HomeController(ILogger<HomeController> logger, ISoruService soruService, IBirimService birimService, ICevapService cevapService)
+    public HomeController(ILogger<HomeController> logger, ISoruService soruService, IBirimService birimService, ICevapService cevapService, IAnketService anketService)
     {
         _logger = logger;
         _soruService = soruService;
         _birimService = birimService;
         _cevapService = cevapService;
+        _anketService = anketService;
     }
 
     public IActionResult Index()
@@ -26,35 +29,70 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> BirimSec()
+    public async Task<IActionResult> BirimSec(int anketId)
     {
-        var birimler = await _birimService.AktifBirimleriGetirServiceAsync(); // sadece aktif birimler gelsin
-        
-        
+        var birimler = await _birimService.AktifBirimleriGetirServiceAsync();
+        ViewBag.AnketId = anketId;
         return View(birimler);
     }
 
     [HttpPost]
-    public async Task<IActionResult> BirimSec(int secilenBirimId)
+    public async Task<IActionResult> BirimSec(int secilenBirimId, int anketId)
     {
         var birim = await _birimService.GetByIdServiceAsync(secilenBirimId);
         if (birim == null)
         {
             TempData["Hata"] = "Lütfen geçerli bir birim seçiniz.";
-            return RedirectToAction("BirimSec");
+            return RedirectToAction("BirimSec", new { anketId });
         }
 
         HttpContext.Session.SetInt32("SecilenBirimId", secilenBirimId);
 
-        return RedirectToAction("Kvkk", new { anketId = 1 });
+        return RedirectToAction("Kvkk", new { anketId });
     }
 
-    public async Task<IActionResult> Kvkk(int anketId = 1)
+    //statik olarak anketId=1'e göre çalışmaktadır
+    //public async Task<IActionResult> BirimSec()
+    //{
+    //    var birimler = await _birimService.AktifBirimleriGetirServiceAsync(); // sadece aktif birimler gelsin
+
+
+    //    return View(birimler);
+    //}
+
+
+
+    //statik olarak anketId=1'e göre çalışmaktadır
+    //[HttpPost]
+    //public async Task<IActionResult> BirimSec(int secilenBirimId)
+    //{
+    //    var birim = await _birimService.GetByIdServiceAsync(secilenBirimId);
+    //    if (birim == null)
+    //    {
+    //        TempData["Hata"] = "Lütfen geçerli bir birim seçiniz.";
+    //        return RedirectToAction("BirimSec");
+    //    }
+
+    //    HttpContext.Session.SetInt32("SecilenBirimId", secilenBirimId);
+
+
+
+    //    return RedirectToAction("Kvkk", new { anketId=1  });
+    //}
+
+    public async Task<IActionResult> Kvkk(/*int anketId = 1*/ int? anketId)
     {
+        if (anketId == null || anketId == 0)
+        {
+            TempData["Hata"] = "Anket numarası geçerli değil.";
+            return RedirectToAction("BirimSec");
+        }
+
         var birimId = HttpContext.Session.GetInt32("SecilenBirimId");
         if (birimId == null)
         {
-            return RedirectToAction("BirimSec");
+            //return RedirectToAction("BirimSec");
+            return RedirectToAction("BirimSec", new { anketId = anketId });
         }
 
         var birim = await _birimService.GetByIdServiceAsync(birimId.Value);
@@ -62,7 +100,8 @@ public class HomeController : Controller
         if (birim == null)
         {
             TempData["Hata"] = "Birim bulunamadı.";
-            return RedirectToAction("BirimSec");
+            //return RedirectToAction("BirimSec");
+            return RedirectToAction("BirimSec", new { anketId = anketId });
         }
 
         ViewBag.AnketId = anketId;
@@ -87,6 +126,29 @@ public class HomeController : Controller
 
     public async Task<IActionResult> AnketDoldur(int anketId, int sayfa = 1)
     {
+        // Anket durumu kontrolu
+        var anket = await _anketService.GetByIdServiceAsync(anketId);
+        if (anket == null)
+        {
+            return NotFound("Anket bulunamadı.");
+        }
+
+        if (anket.AnketDurumu == AnketDurumuEnum.Taslak || anket.AnketDurumu == AnketDurumuEnum.İptal)
+        {
+            return Unauthorized("Bu anket şu anda erişime kapalıdır.");
+        }
+
+        var simdi = DateTime.Now;
+        if (anket.BaslangicTarihi > simdi)
+        {
+            return Unauthorized("Bu anket henüz başlamadı.");
+        }
+        if (anket.BitisTarihi < simdi)
+        {
+            return Unauthorized("Bu anketin süresi dolmuştur.");
+        }
+
+
         var kvkk = HttpContext.Session.GetString("KvkkOnay");
         if (kvkk != "true")
         {
@@ -120,6 +182,29 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> AnketDoldur(int anketId, int sayfa, IFormCollection form)
     {
+        // Anket durum kontrolü (güvenlik açısından POST'ta da yapalım)
+        var anket = await _anketService.GetByIdServiceAsync(anketId);
+        if (anket == null)
+        {
+            return NotFound("Anket bulunamadı.");
+        }
+
+        if (anket.AnketDurumu == AnketDurumuEnum.Taslak || anket.AnketDurumu == AnketDurumuEnum.İptal)
+        {
+            return Unauthorized("Bu anket şu anda erişime kapalıdır.");
+        }
+
+        var simdi = DateTime.Now;
+        if (anket.BaslangicTarihi > simdi)
+        {
+            return Unauthorized("Bu anket henüz başlamadı.");
+        }
+        if (anket.BitisTarihi < simdi)
+        {
+            return Unauthorized("Bu anketin süresi dolmuştur.");
+        }
+
+
         // Cevapları Session'dan al
         var cevaplar = HttpContext.Session.GetString("Cevaplar");
         var cevapSozluk = string.IsNullOrEmpty(cevaplar)
@@ -209,6 +294,22 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Hata(int kod)
+    {
+        switch (kod)
+        {
+            case 403:
+                return View("Error403");
+            case 404:
+                return View("Error404");
+            case 500:
+                return View("Error500");
+            default:
+                return View("Error");
+        }
+
+    }
+
     public IActionResult Yetkisiz()
     {
         return View();
@@ -246,23 +347,9 @@ public class HomeController : Controller
     //    return View(sonucListesi);
     //}
 
-    public IActionResult Hata(int kod)
-    {
-        switch (kod)
-        {
-            case 403:
-                return View("Error403");
-            case 404:
-                return View("Error404");
-            case 500:
-                return View("Error500");
-            default:
-                return View("Error");
-        }
+    
 
-    }
-
-    /*******************************  Anket Soru sayfası sayfalar arası geçiş yapılıyor ama sorunun cevapları kaydedilmiyor *******************************************************************/
+    /**  Anket Soru sayfası sayfalar arası geçiş yapılıyor ama sorunun cevapları kaydedilmiyor ***/
 
     //public async Task<IActionResult> AnketDoldur(int anketId, int sayfa = 1)
     //{

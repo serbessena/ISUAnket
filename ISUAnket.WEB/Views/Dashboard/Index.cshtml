@@ -139,4 +139,59 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Anket Durum Dağılımı</h5>
+                    <canvas id="anketDurumChart" width="400" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        var ctx = document.getElementById('anketDurumChart').getContext('2d');
+        var anketDurumChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Taslak', 'Yayınlandı', 'İptal'],
+                datasets: [{
+                    label: 'Anket Durumu',
+                    data: [
+        
+        @ViewBag.YayinlanmisDurumundakiAnketSayisi,
+        @ViewBag.TaslakDurumundakiAnketSayisi,
+        @ViewBag.IptalDurumundakiAnketSayisi
+                        ],
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.7)', // Taslak - Sarı
+                        'rgba(75, 192, 192, 0.7)',  // Yayınlandı - Turkuaz
+                        'rgba(255, 99, 132, 0.7)'   // İptal - Kırmızı
+                    ],
+                    borderColor: [
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }
+            }
+        });
+    </script>
+                    
+}

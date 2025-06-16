@@ -4,6 +4,7 @@ using ISUAnket.EntityLayer.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ISUAnket.WEB.Controllers
 {
@@ -46,16 +47,29 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> AnketEkle(Anket model)
         {
+            #region Session ile giriş-çıkış işlemleri
 
             // Oturumdan gelen kullanıcı Id'sini alınır
-            var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
+            //var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
 
-            if (kullaniciId == null)
+            //if (kullaniciId == null)
+            //{
+            //    return Unauthorized("Kullanıcı oturumu bulunamadı.");
+            //}
+
+            #endregion
+
+            // Kullanıcı Id'sini cookie (claims) üzerinden alıyoruz
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (kullaniciIdClaim == null)
             {
                 return Unauthorized("Kullanıcı oturumu bulunamadı.");
             }
 
-            model.OlusturanKullaniciId = kullaniciId.Value;
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
+
+            model.OlusturanKullaniciId = kullaniciId;
             model.AnketDurumu = AnketDurumuEnum.Taslak;
             model.OlusturmaTarihi = DateTime.Now;
             model.AktifMi = true;
@@ -86,13 +100,27 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> AnketDuzenle(Anket model)
         {
+            #region Session ile giriş-çıkış işlemleri
+            
+            //var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
 
-            var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
+            //if (duzenleyenId == null)
+            //{
+            //    return Unauthorized("Kullanıcı oturumu bulunamadı.");
+            //}
 
-            if (duzenleyenId == null)
+            #endregion
+
+
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (kullaniciIdClaim == null)
             {
                 return Unauthorized("Kullanıcı oturumu bulunamadı.");
             }
+
+            int duzenleyenId = int.Parse(kullaniciIdClaim.Value);
+
 
             var mevcutAnket = await _anketService.GetByIdServiceAsync(model.Id);
 
@@ -107,7 +135,8 @@ namespace ISUAnket.WEB.Controllers
             mevcutAnket.Link=model.Link;
             mevcutAnket.AnketDurumu=model.AnketDurumu;
             mevcutAnket.AktifMi=model.AktifMi;
-            mevcutAnket.DuzenleyenKullaniciId = duzenleyenId.Value;
+            //mevcutAnket.DuzenleyenKullaniciId = duzenleyenId.Value; Session ile giriş işlemlerinde aç
+            mevcutAnket.DuzenleyenKullaniciId = duzenleyenId;
             mevcutAnket.DuzenlenmeTarihi = DateTime.Now;
 
             #region Link düzenleme veya olmayan linki oluşturma

@@ -49,7 +49,20 @@ namespace ISUAnket.WEB.Controllers
             //aktif anket sayısı
             var aktifAnketSayisi=_context.Anketler.Where(x=>x.AktifMi==true).Count();
             ViewBag.AktifAnketSayisi=aktifAnketSayisi;
-            
+
+            //yayınlanmış durumundaki anket sayısı
+            var yayinlanmisDurumundakiAnketSayisi = _context.Anketler.Where(x => x.AnketDurumu == EntityLayer.Enums.AnketDurumuEnum.Yayınlandı).Count();
+            ViewBag.YayinlanmisDurumundakiAnketSayisi = yayinlanmisDurumundakiAnketSayisi;
+
+            //taslak durumundaki anket sayısı
+            var taslakDurumundakiAnketSayisi = _context.Anketler.Where(x => x.AnketDurumu == EntityLayer.Enums.AnketDurumuEnum.Taslak).Count();
+            ViewBag.TaslakDurumundakiAnketSayisi = taslakDurumundakiAnketSayisi;
+
+
+            //iptal durumundaki anket sayısı
+            var iptalDurumundakiAnketSayisi=_context.Anketler.Where(x=>x.AnketDurumu==EntityLayer.Enums.AnketDurumuEnum.İptal).Count();
+            ViewBag.IptalDurumundakiAnketSayisi = iptalDurumundakiAnketSayisi;
+
             //pasif anket sayısı
             var pasifAnketSayisi=_context.Anketler.Where(x=>x.AktifMi==false).Count();
             ViewBag.PasifAnketSayisi=pasifAnketSayisi;
