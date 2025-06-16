@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISUAnket.DataAccess.Migrations
 {
     [DbContext(typeof(ISUAnketContext))]
-    [Migration("20250529114725_Kullanıcı tablosuna SonCikisTarihi ve OturumAcikMi kolonlarını ekle")]
-    partial class KullanıcıtablosunaSonCikisTarihiveOturumAcikMikolonlarınıekle
+    [Migration("20250613130426_Kullanıcı tablosuna email kolonunu ekle")]
+    partial class Kullanıcıtablosunaemailkolonunuekle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,27 @@ namespace ISUAnket.DataAccess.Migrations
                     b.ToTable("Anketler");
                 });
 
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Birim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Birimler");
+                });
+
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Cevap", b =>
                 {
                     b.Property<int>("Id")
@@ -86,8 +107,8 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Property<bool>("AktifMi")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Birim")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BirimId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CevapTarihi")
                         .HasColumnType("datetime2");
@@ -97,10 +118,12 @@ namespace ISUAnket.DataAccess.Migrations
 
                     b.Property<string>("VerilenCevap")
                         .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BirimId");
 
                     b.HasIndex("SoruId");
 
@@ -122,6 +145,11 @@ namespace ISUAnket.DataAccess.Migrations
 
                     b.Property<bool>("AktifMi")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("KulaniciAdi")
                         .IsRequired()
@@ -172,7 +200,8 @@ namespace ISUAnket.DataAccess.Migrations
 
                     b.Property<string>("RolAdi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -216,7 +245,10 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Property<int>("SoruTipi")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("ZorunluMu")
+                    b.Property<int>("VeriTipi")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ZorunluMu")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -249,11 +281,19 @@ namespace ISUAnket.DataAccess.Migrations
 
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Cevap", b =>
                 {
+                    b.HasOne("ISUAnket.EntityLayer.Entities.Birim", "Birim")
+                        .WithMany("Cevaplar")
+                        .HasForeignKey("BirimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ISUAnket.EntityLayer.Entities.Soru", "Soru")
                         .WithMany("Cevaplar")
                         .HasForeignKey("SoruId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Birim");
 
                     b.Navigation("Soru");
                 });
@@ -293,6 +333,11 @@ namespace ISUAnket.DataAccess.Migrations
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Anket", b =>
                 {
                     b.Navigation("Sorular");
+                });
+
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Birim", b =>
+                {
+                    b.Navigation("Cevaplar");
                 });
 
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Rol", b =>

@@ -1,5 +1,6 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using QuestPDF.Fluent;
@@ -7,6 +8,7 @@ using QuestPDF.Helpers;
 
 namespace ISUAnket.WEB.Controllers
 {
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class CevapController : Controller
     {
         private readonly ICevapService _cevapService;

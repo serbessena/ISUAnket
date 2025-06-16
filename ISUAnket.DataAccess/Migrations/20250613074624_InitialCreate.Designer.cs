@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISUAnket.DataAccess.Migrations
 {
     [DbContext(typeof(ISUAnketContext))]
-    [Migration("20250611084655_Birim tablosundaki Durum kolonunun adını AktifMi olarak değiştir")]
-    partial class BirimtablosundakiDurumkolonununadınıAktifMiolarakdeğiştir
+    [Migration("20250613074624_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,6 +238,9 @@ namespace ISUAnket.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SoruTipi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VeriTipi")
                         .HasColumnType("int");
 
                     b.Property<bool>("ZorunluMu")

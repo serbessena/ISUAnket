@@ -41,17 +41,17 @@
                     }
                 </td>
                 <td>
-                    @if (item.AnketDurumu == AnketDurumuEnum.Yayınlandı)
+                    @switch (item.AnketDurumu)
                     {
-                        <span class="badge bg-success">Yayınlandı</span>
-                    }
-                    @if (item.AnketDurumu == AnketDurumuEnum.Taslak)
-                    {
-                        <span class="badge bg-warning">Taslak</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">İptal</span>
+                        case AnketDurumuEnum.Yayınlandı:
+                            <span class="badge bg-success">Yayınlandı</span>
+                            break;
+                        case AnketDurumuEnum.Taslak:
+                            <span class="badge bg-warning">Taslak</span>
+                            break;
+                        default:
+                            <span class="badge bg-danger">İptal</span>
+                            break;
                     }
                 </td>
                 <td>
@@ -65,8 +65,8 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id"><i class="fa-solid fa-edit"></i> Anket Düzenle</a>
-                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durumu Değiştir</a>
+                    <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id" title="Aktif bilgilerini düzenler"><i class="fa-solid fa-edit"></i> </a>
+                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Aktif pasif değişimi yapar"><i class="fa fa-refresh"></i> </a>
                     
                 </td>
             </tr>

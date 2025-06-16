@@ -30,8 +30,8 @@
                 <td>@(item.ZorunluMu==true ? "Evet" : "Hayır")</td>
                 <td>@(item.AktifMi ? "Aktif" : "Pasif")</td>
                 <td>
-                    <a asp-action="SoruGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="fa-solid fa-edit"></i> Soru Düzenle</a>
-                    <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh"></i> Durum Değiştir</a>
+                    <a asp-action="SoruGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm" title="Soruları düzenler"><i class="fa-solid fa-edit"></i></a>
+                    <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Sorunun aktifliği değiştirir"><i class="fa fa-refresh"></i></a>
                 </td>
             </tr>
         }

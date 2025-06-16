@@ -15,24 +15,28 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
+            @* TCKN *@
             <div class="form-group mt-3">
                 <label asp-for="TCKN"></label>
                 <input class="form-control" asp-for="TCKN" />
                 <span asp-validation-for="TCKN" class="text-danger"></span>
             </div>
 
+            @* Ad *@
             <div class="form-group mt-3">
                 <label asp-for="Ad"></label>
                 <input class="form-control" asp-for="Ad" />
                 <span asp-validation-for="Ad" class="text-danger"></span>
             </div>
 
+            @* Soyad *@
             <div class="form-group mt-3">
                 <label asp-for="Soyad"></label>
                 <input class="form-control" asp-for="Soyad" />
                 <span asp-validation-for="Soyad" class="text-danger"></span>
             </div>
 
+            @* Rol dropdown *@
             <div class="form-group mt-3">
                 <label asp-for="RolId"></label>
                 <select class="form-control" asp-for="RolId" asp-items="ViewBag.RollerListesi"></select>

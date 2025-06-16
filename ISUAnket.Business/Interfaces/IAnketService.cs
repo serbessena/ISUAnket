@@ -10,5 +10,12 @@ namespace ISUAnket.Business.Interfaces
     public interface IAnketService:IGenericService<Anket>
     {
         Task<List<Anket>> GetAllServiceAsync();
+
+        /// <summary>
+        /// anket linki oluşturur
+        /// </summary>
+        /// <param name="anket"></param>
+        /// <returns></returns>
+        Task<int> AnketBaglantisiOlusturServiceAsyn(Anket anket);
     }
 }

@@ -12,12 +12,14 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
+            @* KullanıcıAdı *@
             <div class="form-group mt-3">
                 <label asp-for="KullaniciAdi"></label>
                 <input asp-for="KullaniciAdi" class="form-control" />
                 <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
             </div>
 
+            @* Şifre *@
             <div class="form-group mt-3">
                 <label asp-for="Sifre"></label>
                 <input asp-for="Sifre" class="form-control" type="password" />

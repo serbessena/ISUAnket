@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ISUAnket.WEB.Controllers
 {
-    //[Authorize(Roles = "SüperAdmin,Admin")]
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class RolController : Controller
     {
         private readonly IRolService _rolService;

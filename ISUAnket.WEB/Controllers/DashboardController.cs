@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ISUAnket.WEB.Controllers
 {
-    
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class DashboardController : Controller
     {
         private readonly ISUAnketContext _context;

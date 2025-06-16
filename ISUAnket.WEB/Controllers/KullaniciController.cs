@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace ISUAnket.WEB.Controllers
 {
-    //[Authorize(Roles = "SüperAdmin,Admin")]
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class KullaniciController : Controller
     {
         private readonly IKullaniciService _kullaniciService;
@@ -21,6 +21,7 @@ namespace ISUAnket.WEB.Controllers
             _rolService = rolService;
         }
 
+        
         public async Task<IActionResult> KullaniciListesi()
         {
             var sonuc=await _kullaniciService.KullanicilaraGoreRolListesiServiceAsync();
@@ -95,6 +96,7 @@ namespace ISUAnket.WEB.Controllers
             kullanici.TCKN=model.TCKN;
             kullanici.Ad=model.Ad;
             kullanici.Soyad=model.Soyad;
+            kullanici.Email=model.Email;
             kullanici.RolId=model.RolId;
 
             await _kullaniciService.UpdateServiceAsync(kullanici);
@@ -142,38 +144,102 @@ namespace ISUAnket.WEB.Controllers
             if (string.IsNullOrEmpty(kullaniciAdi) || string.IsNullOrEmpty(sifre))
             {
                 ModelState.AddModelError("", "Kullanıcı adı ve şifre gereklidir");
+                return View();
             }
 
             var user = await _kullaniciService.LoginAsync(kullaniciAdi, sifre);
 
-            if (user==null)
+            if (user == null)
             {
                 ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifre!");
-
                 return View();
             }
 
+            // Kullanıcı giriş yapınca cookie içine claim'leri koy
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.KulaniciAdi),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Rol?.RolAdi ?? "User") // Rol yoksa User ata
+            };
 
-            //Sesssion işlemleri
-            HttpContext.Session.SetInt32("KullaniciId", user.Id);
-            HttpContext.Session.SetString("KullaniciAdi", user.KulaniciAdi);
-            HttpContext.Session.SetString("KullaniciRolu", user.Rol?.RolAdi ?? ""); // Rol adı ekle
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true, // kalıcı cookie (remember me gibi)
+                ExpiresUtc = DateTime.UtcNow.AddHours(12)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
 
             return RedirectToAction("Index", "Home");
+
+            #region Session ile giriş işlemleri için kullanılır
+
+            //if (string.IsNullOrEmpty(kullaniciAdi) || string.IsNullOrEmpty(sifre))
+            //{
+            //    ModelState.AddModelError("", "Kullanıcı adı ve şifre gereklidir");
+            //}
+
+            //var user = await _kullaniciService.LoginAsync(kullaniciAdi, sifre);
+
+            //if (user==null)
+            //{
+            //    ModelState.AddModelError("", "Geçersiz kullanıcı adı veya şifre!");
+
+            //    return View();
+            //}
+
+
+            ////Sesssion işlemleri
+            //HttpContext.Session.SetInt32("KullaniciId", user.Id);
+            //HttpContext.Session.SetString("KullaniciAdi", user.KulaniciAdi);
+            //HttpContext.Session.SetString("KullaniciRolu", user.Rol?.RolAdi ?? ""); // Rol adı ekle
+
+            //return RedirectToAction("Index", "Home");
+
+            #endregion
+
+
         }
 
         public async Task<IActionResult> Logout()
         {
-            var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
+            // Cookie'deki kullaniciId'yi çekiyoruz (claimlerden)
+            var kullaniciIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (kullaniciId.HasValue)
+            if (int.TryParse(kullaniciIdStr, out int kullaniciId))
             {
-                await _kullaniciService.LogoutAsync(kullaniciId.Value);
+                // Veritabanını güncelle (Senin mevcut kodun çalışıyor)
+                await _kullaniciService.LogoutAsync(kullaniciId);
             }
 
-            HttpContext.Session.Clear(); // Oturum bilgileri temizlenir
+            // Cookie'yi temizle (Authentication'dan çıkış yap)
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");
+
+            #region Session giriş işlemleri için kullanılır
+
+            //var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
+
+            //if (kullaniciId.HasValue)
+            //{
+            //    await _kullaniciService.LogoutAsync(kullaniciId.Value);
+            //}
+
+            //HttpContext.Session.Clear(); // Oturum bilgileri temizlenir
+
+            //return RedirectToAction("Login");
+
+            #endregion
+            
+
         }
 
         public IActionResult SifreDegistir()
@@ -184,30 +250,60 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SifreDegistir(string eskiSifre, string yeniSifre)
         {
-            var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
 
-            if (kullaniciId == null)
+            // Session yerine cookie claims üzerinden kullanıcıyı al:
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (kullaniciIdClaim == null)
             {
                 return RedirectToAction("Login");
             }
 
-            var sonuc = await _kullaniciService.SifreDegistirAsync(kullaniciId.Value, eskiSifre, yeniSifre);
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
+
+            var sonuc = await _kullaniciService.SifreDegistirAsync(kullaniciId, eskiSifre, yeniSifre);
 
             if (!sonuc)
             {
                 ModelState.AddModelError("", "Eski şifre hatalı!");
-
                 return View();
             }
 
             ViewBag.Mesaj = "Şifrenizi başarıyla değiştirdiniz!";
 
-            
-            await _kullaniciService.LogoutAsync(kullaniciId.Value);
-            HttpContext.Session.Clear(); // Oturumu temizle
+            // Otomatik çıkış yapalım:
+            await _kullaniciService.LogoutAsync(kullaniciId);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);  // Cookie silinir
 
-           
             return RedirectToAction("Login");
+
+            #region Session bazlı giriş çıkış kontrolü
+
+            //var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
+
+            //if (kullaniciId == null)
+            //{
+            //    return RedirectToAction("Login");
+            //}
+
+            //var sonuc = await _kullaniciService.SifreDegistirAsync(kullaniciId.Value, eskiSifre, yeniSifre);
+
+            //if (!sonuc)
+            //{
+            //    ModelState.AddModelError("", "Eski şifre hatalı!");
+
+            //    return View();
+            //}
+
+            //ViewBag.Mesaj = "Şifrenizi başarıyla değiştirdiniz!";
+
+
+            //await _kullaniciService.LogoutAsync(kullaniciId.Value);
+            //HttpContext.Session.Clear(); // Oturumu temizle
+
+
+            //return RedirectToAction("Login");
+
+            #endregion
         }
 
 
@@ -215,23 +311,64 @@ namespace ISUAnket.WEB.Controllers
 
         public async Task<IActionResult> Profil()
         {
-            int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+            // Cookie içerisindeki NameIdentifier claim'inden kullanıcı ID'sini al
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (kullaniciIdClaim == null)
+            {
+                // Kullanıcı oturum açmamışsa login sayfasına yönlendir
+                return RedirectToAction("Login", "Kullanici");
+            }
+
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
+
             var profil = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
             return View(profil);
+
+            #region Session bazlı giriş çıkış kontrolü
+
+            //int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+            //var profil = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
+
+            //return View(profil);
+
+            #endregion
+
         }
 
         public async Task<IActionResult> ProfilDuzenle()
         {
-            int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (kullaniciIdClaim == null)
+            {
+                return RedirectToAction("Login", "Kullanici");
+            }
+
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
 
             var kullanici = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
 
-            if (kullanici==null)
+            if (kullanici == null)
             {
                 return NotFound("Kullanıcı bulunamadı!");
             }
 
             return View(kullanici);
+
+            #region Session bazlı giriş kontrol işlemleri
+
+            //int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+
+            //var kullanici = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
+
+            //if (kullanici==null)
+            //{
+            //    return NotFound("Kullanıcı bulunamadı!");
+            //}
+
+            //return View(kullanici);
+
+            #endregion
+
         }
 
 
@@ -239,22 +376,54 @@ namespace ISUAnket.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProfilDuzenle(Kullanici model)
         {
-            int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (kullaniciIdClaim == null)
+            {
+                return RedirectToAction("Login", "Kullanici");
+            }
+
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
+
             var kullanici = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
 
-            if (kullanici==null)
+            if (kullanici == null)
             {
                 return NotFound("Kullanıcı bulunamadı!");
             }
 
-            kullanici.Ad = model.Ad;
-            kullanici.Soyad=model.Soyad;
-            kullanici.KulaniciAdi = model.KulaniciAdi;
             kullanici.TCKN = model.TCKN;
+            kullanici.Ad = model.Ad;
+            kullanici.Soyad = model.Soyad;
+            kullanici.KulaniciAdi = model.KulaniciAdi;
+            kullanici.Email = model.Email;
 
             await _kullaniciService.UpdateServiceAsync(kullanici);
 
             return RedirectToAction("Profil");
+
+
+            #region Session bazlı giriş işlemlerinde kullanılır
+
+            //int kullaniciId = Convert.ToInt32(HttpContext.Session.GetInt32("KullaniciId"));
+            //var kullanici = await _kullaniciService.KullaniciProfilGetirAsync(kullaniciId);
+
+            //if (kullanici==null)
+            //{
+            //    return NotFound("Kullanıcı bulunamadı!");
+            //}
+
+            //kullanici.TCKN = model.TCKN;
+            //kullanici.Ad = model.Ad;
+            //kullanici.Soyad=model.Soyad;
+            //kullanici.KulaniciAdi = model.KulaniciAdi;
+            //kullanici.Email = model.Email;
+
+            //await _kullaniciService.UpdateServiceAsync(kullanici);
+
+            //return RedirectToAction("Profil");
+
+            #endregion
+
         }
 
         #endregion

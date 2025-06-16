@@ -39,9 +39,11 @@ namespace ISUAnket.EntityLayer.Entities
         [MaxLength(100,ErrorMessage ="Kullanıcı adı en fazla 100 karakter uzunluğunda olmalıdır!")]
         public string KulaniciAdi { get; set; }
 
-        //[StringLength(100)]
-        //[EmailAddress]
-        //public string Email { get; set; }
+        [Required(ErrorMessage = "Eposta adresi zorunludur!")]
+        [Display(Name = "Eposta")]
+        [StringLength(100)]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required(ErrorMessage ="Şifre zorunludur!")]
         [StringLength(200)]

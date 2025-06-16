@@ -68,6 +68,10 @@ namespace ISUAnket.Business.Managers
         {
             await _soruRepository.ChangeActivePasiveStatusAsync(id);
         }
-        
+
+        public async Task<List<Soru>> GetSorularByAnketIdServiceAsync(int anketId)
+        {
+            return await _soruRepository.GetSorularByAnketIdAsync(anketId);
+        }
     }
 }

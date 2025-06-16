@@ -93,7 +93,7 @@ public class HomeController : Controller
             return RedirectToAction("Kvkk", new { anketId });
         }
 
-        var sorular = await _soruService.GetAllServiceAsync();
+        var sorular = await _soruService.GetSorularByAnketIdServiceAsync(anketId);
 
         if (sorular == null || !sorular.Any())
             return NotFound("Ankete ait soru bulunamadı.");
@@ -127,7 +127,8 @@ public class HomeController : Controller
             : System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(cevaplar);
 
         // Anket sorularını getir
-        var sorular = await _soruService.GetAllServiceAsync();
+        var sorular = await _soruService.GetSorularByAnketIdServiceAsync(anketId);
+
         if (sorular == null || !sorular.Any())
             return NotFound("Ankete ait soru bulunamadı.");
 
@@ -204,6 +205,11 @@ public class HomeController : Controller
     }
 
     public IActionResult Tesekkurler()
+    {
+        return View();
+    }
+
+    public IActionResult Yetkisiz()
     {
         return View();
     }

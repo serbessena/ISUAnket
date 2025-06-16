@@ -20,6 +20,9 @@ namespace ISUAnket.EntityLayer.Entities
         [Display(Name ="Soru Tipi")]
         public SoruTipiEnum SoruTipi { get; set; }
 
+        [Display(Name = "Veri Tipi")]
+        public VeriTipiEnum VeriTipi { get; set; }
+
         [Display(Name ="Seçenekler")]
         public string? SoruSecenekleri { get; set; }
 
@@ -45,7 +48,6 @@ namespace ISUAnket.EntityLayer.Entities
 
         [Display(Name = "Anket")]
         public int? AnketId { get; set; }
-
        
         public Anket? Anket { get; set; }
         public List<Cevap> Cevaplar { get; set; }

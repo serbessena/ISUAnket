@@ -6,18 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ISUAnket.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class VeritabanınıOlustur : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Birimler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ad = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    AktifMi = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Birimler", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Roller",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RolAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RolAdi = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     AktifMi = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -36,6 +50,8 @@ namespace ISUAnket.DataAccess.Migrations
                     Soyad = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     KulaniciAdi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Sifre = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    OturumAcikMi = table.Column<bool>(type: "bit", nullable: false),
+                    SonCikisTarihi = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AktifMi = table.Column<bool>(type: "bit", nullable: false),
                     RolId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -90,13 +106,14 @@ namespace ISUAnket.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SoruMetni = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     SoruTipi = table.Column<int>(type: "int", nullable: false),
+                    VeriTipi = table.Column<int>(type: "int", nullable: false),
                     SoruSecenekleri = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OlusturanKullaniciId = table.Column<int>(type: "int", nullable: false),
                     OlusturmaTarihi = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DuzenleyenKullaniciId = table.Column<int>(type: "int", nullable: true),
                     DuzenlenmeTarihi = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AktifMi = table.Column<bool>(type: "bit", nullable: false),
-                    ZorunluMu = table.Column<bool>(type: "bit", nullable: true),
+                    ZorunluMu = table.Column<bool>(type: "bit", nullable: false),
                     AnketId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -126,15 +143,21 @@ namespace ISUAnket.DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Birim = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VerilenCevap = table.Column<string>(type: "nvarchar(600)", maxLength: 600, nullable: false),
+                    VerilenCevap = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
                     CevapTarihi = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AktifMi = table.Column<bool>(type: "bit", nullable: false),
-                    SoruId = table.Column<int>(type: "int", nullable: false)
+                    SoruId = table.Column<int>(type: "int", nullable: false),
+                    BirimId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cevaplar", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cevaplar_Birimler_BirimId",
+                        column: x => x.BirimId,
+                        principalTable: "Birimler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cevaplar_Sorular_SoruId",
                         column: x => x.SoruId,
@@ -152,6 +175,11 @@ namespace ISUAnket.DataAccess.Migrations
                 name: "IX_Anketler_OlusturanKullaniciId",
                 table: "Anketler",
                 column: "OlusturanKullaniciId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cevaplar_BirimId",
+                table: "Cevaplar",
+                column: "BirimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cevaplar_SoruId",
@@ -184,6 +212,9 @@ namespace ISUAnket.DataAccess.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Cevaplar");
+
+            migrationBuilder.DropTable(
+                name: "Birimler");
 
             migrationBuilder.DropTable(
                 name: "Sorular");

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISUAnket.WEB.Controllers
 {
-    //[Authorize(Roles = "SüperAdmin,Admin")]
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class AnketController : Controller
     {
         private readonly IAnketService _anketService;
@@ -61,6 +61,13 @@ namespace ISUAnket.WEB.Controllers
             model.AktifMi = true;
 
             await _anketService.AddServiceAsync(model);
+
+            // Kaydettikten sonra model.Id otomatik oluştu
+            var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            model.Link = $"{siteUrl}/Home/AnketDoldur?anketId={model.Id}";
+
+            await _anketService.UpdateServiceAsync(model);
+
             return RedirectToAction(nameof(AnketListesi));
         }
 
@@ -79,11 +86,6 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> AnketDuzenle(Anket model)
         {
-            //if (!ModelState.IsValid)
-            //{
-
-            //    return View(model);
-            //}
 
             var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
 
@@ -107,6 +109,13 @@ namespace ISUAnket.WEB.Controllers
             mevcutAnket.AktifMi=model.AktifMi;
             mevcutAnket.DuzenleyenKullaniciId = duzenleyenId.Value;
             mevcutAnket.DuzenlenmeTarihi = DateTime.Now;
+
+            #region Link düzenleme veya olmayan linki oluşturma
+
+            var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            mevcutAnket.Link = $"{siteUrl}/Home/AnketDoldur?anketId={mevcutAnket.Id}";
+
+            #endregion
 
 
             await _anketService.UpdateServiceAsync(mevcutAnket);

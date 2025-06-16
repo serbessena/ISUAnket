@@ -143,6 +143,11 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Property<bool>("AktifMi")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("KulaniciAdi")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -235,6 +240,9 @@ namespace ISUAnket.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SoruTipi")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VeriTipi")
                         .HasColumnType("int");
 
                     b.Property<bool>("ZorunluMu")

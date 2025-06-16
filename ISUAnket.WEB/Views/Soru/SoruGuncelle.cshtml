@@ -15,35 +15,59 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
+            @* Anket dropdown *@
             <div class="form-group mt-3">
                 <label asp-for="AnketId"></label>
                 <select asp-for="AnketId" asp-items="ViewBag.AnketListesi" class="form-control"></select>
                 <span asp-validation-for="AnketId" class="text-danger"></span>
             </div>
 
+            @* SoruMetni *@
             <div class="form-group mt-3">
                 <label asp-for="SoruMetni"></label>
                 <textarea asp-for="SoruMetni" class="form-control" rows="2"></textarea>
                 <span asp-validation-for="SoruMetni" class="text-danger"></span>
             </div>
 
+            @* SoruTipi *@
             <div class="form-group mt-3">
                 <label asp-for="SoruTipi"></label>
                 <select asp-for="SoruTipi" asp-items="Html.GetEnumSelectList<SoruTipiEnum>()" class="form-control" id="soruTipi"></select>
                 <span asp-validation-for="SoruTipi" class="text-danger"></span>
             </div>
 
+            @* VeriTipi dropdown *@
+            <div class="form-group mt-3">
+                <label asp-for="VeriTipi"></label>
+                <select asp-for="VeriTipi" asp-items="Html.GetEnumSelectList<VeriTipiEnum>()" class="form-control"></select>
+                <span asp-validation-for="VeriTipi" class="text-danger"></span>
+            </div>
+
+            @* ZorunluMu *@
             <div class="form-check mt-3">
                 <input asp-for="ZorunluMu" class="form-check-input" type="checkbox" id="ZorunluMu" />
                 <label asp-for="ZorunluMu" class="form-check-label"></label>
                 <span asp-validation-for="ZorunluMu" class="text-danger d-block"></span>
             </div>
 
+            @* seçenekler *@
             <div class="form-group mt-3" id="seceneklerDiv" style="display:none;">
+                <label>Seçenekler</label>
+
+                <div id="seceneklerListesi"></div>
+
+                <button type="button" id="secenekEkleBtn" class="btn btn-sm btn-outline-success mt-2">Seçenek Ekle</button>
+
+                <input type="hidden" asp-for="SoruSecenekleri" id="SoruSecenekleri" />
+                <span asp-validation-for="SoruSecenekleri" class="text-danger"></span>
+            </div>
+
+            @* soru seçenekleri ilk baştaki kullanım *@
+            @* <div class="form-group mt-3" id="seceneklerDiv" style="display:none;">
                 <label asp-for="SoruSecenekleri"></label>
                 <textarea asp-for="SoruSecenekleri" class="form-control" rows="3" placeholder="Çoktan seçmeli için virgülle ayırın"></textarea>
                 <span asp-validation-for="SoruSecenekleri" class="text-danger"></span>
-            </div>
+            </div> *@
 
             <div class="form-group mt-4 text-center">
                 <a asp-controller="Soru" asp-action="SoruListesi" class="btn btn-outline-danger btn-sm me-2">İptal</a>
@@ -62,6 +86,7 @@
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script>
+
         $(document).ready(function () {
 
             function toggleSecenekler() {
@@ -73,14 +98,82 @@
                 }
             }
 
-            // Sayfa ilk yüklendiğinde kontrol et
+            // Sayfa yüklenince kontrol et
             toggleSecenekler();
 
-            // Dropdown değişince kontrol et
+            // Tip değişirse kontrol et
             $("#soruTipi").change(function () {
                 toggleSecenekler();
             });
 
+            // Sayfa yüklenince varsa mevcut seçenekleri doldur:
+            var mevcutSecenekler = '@Model.SoruSecenekleri';
+            if (mevcutSecenekler) {
+                var secenekDizisi = mevcutSecenekler.split(',');
+                secenekDizisi.forEach(function (item) {
+                    $("#seceneklerListesi").append(`
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control secenekInput" value="${item.trim()}" />
+                                    <button type="button" class="btn btn-outline-danger btn-sm secenekSilBtn">Sil</button>
+                                </div>
+                            `);
+                });
+            }
+
+            // Seçenek ekleme işlemi
+            $("#secenekEkleBtn").click(function () {
+                $("#seceneklerListesi").append(`
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control secenekInput" placeholder="Seçenek giriniz" />
+                                <button type="button" class="btn btn-outline-danger btn-sm secenekSilBtn">Sil</button>
+                            </div>
+                        `);
+            });
+
+            // Seçenek silme işlemi
+            $(document).on('click', '.secenekSilBtn', function () {
+                $(this).closest('.input-group').remove();
+            });
+
+            // Form submit olurken hepsini birleştir:
+            $("form").submit(function () {
+                var secenekler = [];
+                $(".secenekInput").each(function () {
+                    var val = $(this).val().trim();
+                    if (val !== "") {
+                        secenekler.push(val);
+                    }
+                });
+                $("#SoruSecenekleri").val(secenekler.join(","));
+            });
+
         });
+        
+        
+        
+        
+        
+        
+        
+        // $(document).ready(function () {
+
+        //     function toggleSecenekler() {
+        //         var selectedValue = parseInt($("#soruTipi").val());
+        //         if (selectedValue === 2 || selectedValue === 3) {
+        //             $("#seceneklerDiv").show();
+        //         } else {
+        //             $("#seceneklerDiv").hide();
+        //         }
+        //     }
+
+        //     // Sayfa ilk yüklendiğinde kontrol et
+        //     toggleSecenekler();
+
+        //     // Dropdown değişince kontrol et
+        //     $("#soruTipi").change(function () {
+        //         toggleSecenekler();
+        //     });
+
+        // });
     </script>
 }

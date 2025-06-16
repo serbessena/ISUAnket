@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISUAnket.WEB.Controllers
 {
-    //[Authorize(Roles = "SüperAdmin,Admin")]
+    [Authorize(Roles = "SüperAdmin,Admin")]
     public class SoruController : Controller
     {
         private readonly ISoruService _soruService;
@@ -38,13 +38,6 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SoruEkle(Soru model)
         {
-            //if(!ModelState.IsValid)
-            //{
-            //    var anketler = await _anketService.GetListAllServiceAsync();
-            //    ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
-
-            //    return View(model);
-            //}
 
             var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
             if (kullaniciId==null)
@@ -80,14 +73,6 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SoruGuncelle(Soru model)
         {
-            //if (!ModelState.IsValid) 
-            //{
-            //    var anketler = await _anketService.GetListAllServiceAsync();
-            //    ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
-
-            //    return View(model);
-            //}
-
             var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
 
             if (duzenleyenId == null)

@@ -4,6 +4,7 @@ using ISUAnket.Business.Managers;
 using ISUAnket.DataAccess.Context;
 using ISUAnket.DataAccess.Interfaces;
 using ISUAnket.DataAccess.Repositories;
+using ISUAnket.DataAccess.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -49,6 +50,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/Kullanici/Login";
         options.LogoutPath = "/Kullanici/Logout";
+        options.AccessDeniedPath = "/Home/Yetkisiz";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); //30 dakika gecerlidir
+        options.SlidingExpiration = true;
     });
 
 builder.Services.AddAuthorization();
@@ -63,6 +67,12 @@ builder.Services.AddSession(options =>
 builder.Services.AddControllers().AddFluentValidation();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.InitializeAsync(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
