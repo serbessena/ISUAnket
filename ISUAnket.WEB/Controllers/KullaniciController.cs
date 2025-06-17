@@ -160,7 +160,8 @@ namespace ISUAnket.WEB.Controllers
             {
                 new Claim(ClaimTypes.Name, user.KulaniciAdi),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Rol?.RolAdi ?? "User") // Rol yoksa User ata
+                new Claim(ClaimTypes.Role, user.Rol?.RolAdi ?? "User"),// Rol yoksa User ata
+                new Claim("AdSoyad", $"{user.Ad} {user.Soyad}")
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
