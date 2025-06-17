@@ -3,6 +3,7 @@ using ISUAnket.EntityLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ISUAnket.WEB.Controllers
 {
@@ -38,14 +39,29 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SoruEkle(Soru model)
         {
+            #region Session ile giriş kontrol
 
-            var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
-            if (kullaniciId==null)
+            //var kullaniciId = HttpContext.Session.GetInt32("KullaniciId");
+            //if (kullaniciId==null)
+            //{
+            //    return Unauthorized("Kullanıcı bulunamadı!");
+            //}
+
+            #endregion
+
+
+            // Kullanıcı Id'sini cookie  üzerinden alıyoruz
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (kullaniciIdClaim == null)
             {
-                return Unauthorized("Kullanıcı bulunamadı!");
+                return Unauthorized("Kullanıcı oturumu bulunamadı.");
             }
 
-            model.OlusturanKullaniciId = kullaniciId.Value;
+            int kullaniciId = int.Parse(kullaniciIdClaim.Value);
+
+            //model.OlusturanKullaniciId = kullaniciId.Value; //Session ile giriş işlemlerinde kullanılır
+            model.OlusturanKullaniciId = kullaniciId;
             model.OlusturmaTarihi = DateTime.Now;
             model.AktifMi = true;
 
@@ -73,12 +89,27 @@ namespace ISUAnket.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SoruGuncelle(Soru model)
         {
-            var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
+            #region Session bazlı giriş kontrolü
 
-            if (duzenleyenId == null)
+            //var duzenleyenId = HttpContext.Session.GetInt32("KullaniciId");
+
+            //if (duzenleyenId == null)
+            //{
+            //    return Unauthorized("Kullanıcı oturumu bulunamadı.");
+            //}
+
+            #endregion
+
+
+            // Cookie (Claims) üzerinden kullanıcı ID'sini al
+            var kullaniciIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (kullaniciIdClaim == null)
             {
                 return Unauthorized("Kullanıcı oturumu bulunamadı.");
             }
+
+            int duzenleyenId = int.Parse(kullaniciIdClaim.Value);
 
             var mevcutSoru = await _soruService.GetByIdServiceAsync(model.Id);
             if (mevcutSoru == null)
@@ -90,10 +121,12 @@ namespace ISUAnket.WEB.Controllers
             mevcutSoru.SoruMetni = model.SoruMetni;
             mevcutSoru.AnketId = model.AnketId;
             mevcutSoru.ZorunluMu = model.ZorunluMu;
-            mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value;
+            //mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value; //Session bazlı giriş için kullanılır
+            mevcutSoru.DuzenleyenKullaniciId = duzenleyenId;
             mevcutSoru.DuzenlenmeTarihi = DateTime.Now;
 
-            mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value;
+            //mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value; //Session bazlı giriş için kullanılır
+            mevcutSoru.DuzenleyenKullaniciId = duzenleyenId;
             mevcutSoru.DuzenlenmeTarihi = DateTime.Now;
             mevcutSoru.SoruSecenekleri = model.SoruSecenekleri;
 
