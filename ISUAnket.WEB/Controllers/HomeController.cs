@@ -135,17 +135,17 @@ public class HomeController : Controller
 
         if (anket.AnketDurumu == AnketDurumuEnum.Taslak || anket.AnketDurumu == AnketDurumuEnum.İptal)
         {
-            return Unauthorized("Bu anket şu anda erişime kapalıdır.");
+            return NotFound("Bu anket şu anda erişime kapalıdır.");
         }
 
         var simdi = DateTime.Now;
         if (anket.BaslangicTarihi > simdi)
         {
-            return Unauthorized("Bu anket henüz başlamadı.");
+            return NotFound("Bu anket henüz başlamadı.");
         }
         if (anket.BitisTarihi < simdi)
         {
-            return Unauthorized("Bu anketin süresi dolmuştur.");
+            return NotFound("Bu anketin süresi dolmuştur.");
         }
 
 
