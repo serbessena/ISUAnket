@@ -1,4 +1,5 @@
-﻿using ISUAnket.EntityLayer.Entities;
+﻿using ISUAnket.DataAccess.Extentions;
+using ISUAnket.EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace ISUAnket.DataAccess.Context
         public ISUAnketContext(DbContextOptions<ISUAnketContext> options)
             : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public DbSet<Anket> Anketler { get; set; }
@@ -23,6 +25,14 @@ namespace ISUAnket.DataAccess.Context
         public DbSet<Kullanici> Kullanicilar{ get; set; }
         public DbSet<Rol> Roller { get; set; }
         public DbSet<Birim> Birimler { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyUtcDateTimeConverter();
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema("ANKET");
+        }
 
         //ilk migration oluşturukurken bu alan yorum satırından çıkarılmalıdır
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
