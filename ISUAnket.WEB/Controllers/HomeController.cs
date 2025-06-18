@@ -29,6 +29,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Index2()
+    {
+        return View();
+    }
+
     public async Task<IActionResult> BirimSec(int anketId)
     {
         var birimler = await _birimService.AktifBirimleriGetirServiceAsync();
