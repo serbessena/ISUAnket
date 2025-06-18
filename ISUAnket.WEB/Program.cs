@@ -18,7 +18,7 @@ builder.Services.AddControllersWithViews();
 
 
 //builder.Services.AddDbContext<ISUAnketContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ISUAnketContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsHistoryTable("__EFMigrationsHistory", "ANKET")));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 //builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericManager<>));
@@ -43,6 +43,9 @@ builder.Services.AddScoped<IBirimService, BirimManager>();
 
 //eppluss lisansýz kullaným için ISU takma adý kullanýldý. Farklý bir adda kullanýlabilir
 ExcelPackage.License.SetNonCommercialPersonal("ISU");
+
+//ankette link olusturulurken Id deðerini sifrelemek icin kullanilir
+builder.Services.AddDataProtection();
 
 //builder.Services.AddSession();
 
@@ -94,8 +97,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseExceptionHandler("/Home/Hata?kod=500");
-app.UseStatusCodePagesWithReExecute("/Home/Hata", "?kod={0}");
+//sayfa bulunamazsa hata sayfasýna yönlendirir
+//app.UseExceptionHandler("/Home/Hata?kod=500");
+//app.UseStatusCodePagesWithReExecute("/Home/Hata", "?kod={0}");
 
 app.MapControllerRoute(
     name: "default",

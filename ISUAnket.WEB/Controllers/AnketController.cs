@@ -2,6 +2,7 @@
 using ISUAnket.EntityLayer.Entities;
 using ISUAnket.EntityLayer.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -13,11 +14,13 @@ namespace ISUAnket.WEB.Controllers
     {
         private readonly IAnketService _anketService;
         private readonly IKullaniciService _kullaniciService;
+        private readonly IDataProtector _protector;
 
-        public AnketController(IAnketService anketService, IKullaniciService kullaniciService)
+        public AnketController(IAnketService anketService, IKullaniciService kullaniciService, IDataProtectionProvider provider)
         {
             _anketService = anketService;
             _kullaniciService = kullaniciService;
+            _protector = provider.CreateProtector("AnketIdKoruma"); //anketId değerini şifrelemek icin tanimlandi
         }
 
         public async Task<IActionResult> AnketListesi()
@@ -76,9 +79,15 @@ namespace ISUAnket.WEB.Controllers
 
             await _anketService.AddServiceAsync(model);
 
-            // Kaydettikten sonra model.Id otomatik oluştu
+            // Kaydettikten sonra model.Id otomatik oluştu anket oluşur ama AnketId degeri sifresiz olarak goruntulenir
+            //var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            //model.Link = $"{siteUrl}/Home/AnketDoldur?anketId={model.Id}";
+
+            string sifreliId = _protector.Protect(model.Id.ToString());
+
             var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
-            model.Link = $"{siteUrl}/Home/AnketDoldur?anketId={model.Id}";
+            model.Link = $"{siteUrl}/Home/AnketDoldur?anketId={sifreliId}";
+
 
             await _anketService.UpdateServiceAsync(model);
 
@@ -139,13 +148,22 @@ namespace ISUAnket.WEB.Controllers
             mevcutAnket.DuzenleyenKullaniciId = duzenleyenId;
             mevcutAnket.DuzenlenmeTarihi = DateTime.Now;
 
-            #region Link düzenleme veya olmayan linki oluşturma
+            #region Link düzenleme veya olmayan linki oluşturma (AnketId şifresiz bir şekilde tutulur)
 
-            var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
-            mevcutAnket.Link = $"{siteUrl}/Home/AnketDoldur?anketId={mevcutAnket.Id}";
+            //var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            //mevcutAnket.Link = $"{siteUrl}/Home/AnketDoldur?anketId={mevcutAnket.Id}";
 
             #endregion
 
+            #region Link düzenleme: AnketId şifrelenmiş olarak eklenecek
+
+            var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+
+            string sifrelenmisId = _protector.Protect(mevcutAnket.Id.ToString());
+
+            mevcutAnket.Link = $"{siteUrl}/Home/AnketDoldur?anketId={sifrelenmisId}";
+
+            #endregion
 
             await _anketService.UpdateServiceAsync(mevcutAnket);
 

@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "Birim Seç";
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
-    int anketId = ViewBag.AnketId ?? 0;
+    //int anketId = ViewBag.AnketId ?? 0; //anketId değeri şifresiz bir şekilde gelirken kullanilir
+    string anketId = ViewBag.AnketId as string;
 }
 
 

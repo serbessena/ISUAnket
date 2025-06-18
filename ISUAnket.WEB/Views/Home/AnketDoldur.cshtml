@@ -7,7 +7,8 @@
     Layout = "~/Views/Shared/_KullaniciLayout.cshtml";
     int sayfa = (int)ViewBag.Sayfa;
     int toplamSayfa = (int)ViewBag.ToplamSayfa;
-    int anketId = (int)ViewBag.AnketId;
+    //int anketId = (int)ViewBag.AnketId; //anketId şifresiz bir şekilde gönderiliyor.
+    string sifreliAnketId = (string)ViewBag.AnketId;
     var cevaplar = ViewBag.Cevaplar as Dictionary<string, string>;
     string cevapKey = $"Cevap_{Model.Id}";
     string cevapDegeri = cevaplar != null && cevaplar.ContainsKey(cevapKey) ? cevaplar[cevapKey] : "";
@@ -23,7 +24,9 @@
 }
 
 <form asp-action="AnketDoldur" method="post">
-    <input type="hidden" name="anketId" value="@anketId" />
+    @* anketId sifresiz sekilde gonderilmek istendigi durumlarda kullanilmali *@
+    @* <input type="hidden" name="anketId" value="@anketId" /> *@
+    <input type="hidden" name="anketId" value="@sifreliAnketId" />
     <input type="hidden" name="sayfa" value="@sayfa" />
 
     <div class="form-group mb-3">
@@ -73,7 +76,9 @@
     <div class="d-flex justify-content-center gap-2 mt-4">
         @if (sayfa > 1)
         {
-            <a asp-action="AnketDoldur" asp-route-anketId="@anketId" asp-route-sayfa="@(sayfa - 1)" class="btn btn-outline-secondary">← Geri</a>
+            @* anketId sifresiz bir sekilde tutuluyor *@
+            @* <a asp-action="AnketDoldur" asp-route-anketId="@anketId" asp-route-sayfa="@(sayfa - 1)" class="btn btn-outline-secondary">← Geri</a> *@
+            <a asp-action="AnketDoldur" asp-route-anketId="@sifreliAnketId" asp-route-sayfa="@(sayfa - 1)" class="btn btn-outline-secondary">← Geri</a>
         }
         else
         {
