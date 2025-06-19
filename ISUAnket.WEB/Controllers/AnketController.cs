@@ -14,13 +14,15 @@ namespace ISUAnket.WEB.Controllers
     {
         private readonly IAnketService _anketService;
         private readonly IKullaniciService _kullaniciService;
-        private readonly IDataProtector _protector;
+        private readonly IDataProtector _protector; //anketId linkini şifreli bir şekilde gönderiri
+        private readonly IConfiguration _configuration; 
 
-        public AnketController(IAnketService anketService, IKullaniciService kullaniciService, IDataProtectionProvider provider)
+        public AnketController(IAnketService anketService, IKullaniciService kullaniciService, IDataProtectionProvider provider, IConfiguration configuration)
         {
             _anketService = anketService;
             _kullaniciService = kullaniciService;
             _protector = provider.CreateProtector("AnketIdKoruma"); //anketId değerini şifrelemek icin tanimlandi
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> AnketListesi()
@@ -85,7 +87,10 @@ namespace ISUAnket.WEB.Controllers
 
             string sifreliId = _protector.Protect(model.Id.ToString());
 
+            //localde calisirkenki localhost adresini otomatik olarak alır
             var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+
+            
             model.Link = $"{siteUrl}/Home/AnketDoldur?anketId={sifreliId}";
 
 
@@ -157,8 +162,9 @@ namespace ISUAnket.WEB.Controllers
 
             #region Link düzenleme: AnketId şifrelenmiş olarak eklenecek
 
-            var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
-
+            //localdaki siteUrl bilgisini tutar
+            //var siteUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
+            var siteUrl = _configuration["SiteUrl"];
             string sifrelenmisId = _protector.Protect(mevcutAnket.Id.ToString());
 
             mevcutAnket.Link = $"{siteUrl}/Home/AnketDoldur?anketId={sifrelenmisId}";

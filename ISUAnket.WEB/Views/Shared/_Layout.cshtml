@@ -45,12 +45,12 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="yonetimDropdown">
                                     <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">İstatistikler</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Birim" asp-action="BirimListesi">Birim Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Rol" asp-action="RolListesi">Rol Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Kullanici" asp-action="KullaniciListesi">Kullanıcı Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Anket" asp-action="AnketListesi">Anket Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Soru" asp-action="SoruListesi">Soru Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Cevap" asp-action="CevapListesi">Cevap Listesi</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Birim" asp-action="BirimListesi">Birimler</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Rol" asp-action="RolListesi">Roller</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Kullanici" asp-action="KullaniciListesi">Kullanıcılar</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Anket" asp-action="AnketListesi">Anketler</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Soru" asp-action="SoruListesi">Sorular</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Cevap" asp-action="CevapListesi">Soru Sonuçları</a></li>
                                 </ul>
                             </li>
                         }
@@ -62,9 +62,9 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="yonetimDropdown">
                                     <li><a class="dropdown-item" asp-controller="Dashboard" asp-action="Index">İstatistikler</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Anket" asp-action="AnketListesi">Anket Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Soru" asp-action="SoruListesi">Soru Listesi</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Cevap" asp-action="CevapListesi">Cevap Listesi</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Anket" asp-action="AnketListesi">Anketler</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Soru" asp-action="SoruListesi">Sorular</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Cevap" asp-action="CevapListesi">Soru Sonuçları</a></li>
                                 </ul>
                             </li>
                         }
@@ -85,11 +85,11 @@
                         else
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-success">Merhaba, @adSoyad</span>
+                                <span class="nav-link text-success">@adSoyad</span>
                             </li>
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Kullanici" asp-action="Profil">Bilgilerim</a>
-                            </li>
+                            </li> *@
                             <li class="nav-item">
                                 <a class="nav-link text-danger" asp-controller="Kullanici" asp-action="Logout">Çıkış Yap</a>
                             </li>

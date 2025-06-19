@@ -30,7 +30,7 @@
         {
             <tr>
                 <td>@item.Ad</td>
-                <td>@item.Link</td>
+                <td style="max-width: 250px; word-break: break-all;">@item.Link</td> 
                 <td>@(item.OlusturanKullanici != null ? item.OlusturanKullanici.Ad + " " + item.OlusturanKullanici.Soyad : "Kullanıcı bilgisi yok")</td>
                 <td>
                     @if (item.OlusturmaTarihi != null)
