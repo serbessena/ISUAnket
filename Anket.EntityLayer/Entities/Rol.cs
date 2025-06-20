@@ -22,5 +22,7 @@ namespace ISUAnket.EntityLayer.Entities
         public bool AktifMi { get; set; } = true;
         public List<Kullanici> Kullanicilar { get; set; }
 
+        public List<MenuRol> MenuRoller { get; set; } = new();
+
     }
 }

@@ -47,7 +47,28 @@ namespace ISUAnket.Business.Managers
 
         public async Task UpdateServiceAsync(Kullanici entity)
         {
-            await _kullaniciRepository.UpdateAsync(entity);
+            var mevcutKullanici = await _kullaniciRepository.GetByIdAsync(entity.Id);
+
+            if (mevcutKullanici == null)
+                throw new Exception("Güncellenecek kullanıcı bulunamadı.");
+
+            // Kullanıcı bilgileri güncelleniyor
+            mevcutKullanici.Ad = entity.Ad;
+            mevcutKullanici.Soyad = entity.Soyad;
+            mevcutKullanici.Email = entity.Email;
+            mevcutKullanici.TCKN = entity.TCKN;
+            mevcutKullanici.RolId = entity.RolId;
+            mevcutKullanici.KulaniciAdi = entity.KulaniciAdi;
+
+            // Şifre alanı dummy değilse ve mevcut şifreyle aynı değilse şifreyi güncelle (hashle)
+            if (!string.IsNullOrWhiteSpace(entity.Sifre) &&
+                !VerifyPassword(entity.Sifre, mevcutKullanici.Sifre))
+            {
+                mevcutKullanici.Sifre = HashPassword(entity.Sifre);
+            }
+
+            await _kullaniciRepository.UpdateAsync(mevcutKullanici);
+            // await _kullaniciRepository.UpdateAsync(entity);
         }
 
         public async Task DeleteServiceAsync(Kullanici entity)

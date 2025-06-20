@@ -99,6 +99,12 @@ namespace ISUAnket.WEB.Controllers
             kullanici.Email=model.Email;
             kullanici.RolId=model.RolId;
 
+            // Eğer kullanıcı şifreyi değiştirmemişse, dummy ise eski şifreyi koru
+            if (!string.IsNullOrWhiteSpace(model.Sifre) && model.Sifre != "dummy-password")
+            {
+                kullanici.Sifre = model.Sifre; // burada hashlenmiş olmalı
+            }
+
             await _kullaniciService.UpdateServiceAsync(kullanici);
 
             return RedirectToAction(nameof(KullaniciListesi));
@@ -178,7 +184,7 @@ namespace ISUAnket.WEB.Controllers
                 authProperties
             );
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
 
             #region Session ile giriş işlemleri için kullanılır
 

@@ -22,5 +22,9 @@ namespace ISUAnket.EntityLayer.Entities
         public bool AktifMi { get; set; }=false;
 
         public List<Cevap> Cevaplar { get; set; }
+
+        [Display(Name ="Birim Kodu")]
+        [StringLength(200)]
+        public string? BirimKod { get; set; }
     }
 }

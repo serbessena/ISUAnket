@@ -4,40 +4,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="d-flex align-items-center justify-content-center min-vh-50">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
 
-<form asp-action="RolAta" method="post">
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="RolAta" method="post" novalidate>
 
-    <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+            <input type="hidden" asp-for="Id" />
 
-            <div class="form-group mt-3">
-                <label asp-for="KulaniciAdi"></label>
+            @*  Kullanıcı Adı *@
+            <div class="mb-3">
+                <label asp-for="KulaniciAdi" class="form-label fw-semibold"></label>
                 <input type="text" class="form-control" asp-for="KulaniciAdi" readonly />
             </div>
 
-            <div class="form-group mt-3">
-                <label asp-for="RolId"></label>
-                <select asp-for="RolId" class="form-control" asp-items="ViewBag.RollerListesi">
+            @*  Rol Seçimi *@
+            <div class="mb-3">
+                <label asp-for="RolId" class="form-label fw-semibold"></label>
+                <select asp-for="RolId" class="form-select" asp-items="ViewBag.RollerListesi">
                     <option value="">Seçiniz</option>
                 </select>
-                <span asp-validation-for="RolId" class="text-danger"></span>
+                <span asp-validation-for="RolId" class="text-danger small"></span>
             </div>
 
-            <div class="form-group text-center mt-3">
-                <a asp-controller="Kullanici" asp-action="KullaniciListesi" class="btn btn-outline-danger btn-sm">İptal</a>
-                <button type="submit" class="btn btn-outline-primary btn-sm">Rol Ata</button>
+            @*  Butonlar  *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="Kullanici" asp-action="KullaniciListesi" class="btn btn-outline-danger">İptal</a>
+                <button type="submit" class="btn btn-outline-primary">Rol Ata</button>
             </div>
 
-        </div>
+        </form>
+
     </div>
-    
-
-</form>
+</div>
 
 @section Scripts {
     @{

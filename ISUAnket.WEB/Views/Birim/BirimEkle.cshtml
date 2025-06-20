@@ -4,32 +4,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="d-flex align-items-center justify-content-center min-vh-50">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
 
-<form asp-action="BirimEkle" method="post">
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="BirimEkle" method="post" novalidate>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
 
-            @* Birim adı *@
-            <div class="form-group mt-3">
-                <label asp-for="Ad"></label>
+            @*  Birim Adı  *@
+            <div class="mb-3">
+                <label asp-for="Ad" class="form-label fw-semibold"></label>
                 <input asp-for="Ad" class="form-control" />
-                <span asp-validation-for="Ad" class="text-danger"></span>
+                <span asp-validation-for="Ad" class="text-danger small"></span>
             </div>
 
-            <div class="form-group mt-3 text-center">
-                <a asp-controller="Rol" asp-action="BirimListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+            @*  Butonlar *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="Birim" asp-action="BirimListesi" class="btn btn-outline-danger btn-sm">Vazgeç</a>
                 <button type="submit" class="btn btn-outline-primary btn-sm">Ekle</button>
             </div>
 
-        </div>
+        </form>
+
     </div>
-
-
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -1,0 +1,63 @@
+﻿@model Menu
+@{
+    ViewData["Title"] = "Rol Güncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex align-items-center justify-content-center min-vh-50">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
+
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
+
+        <form asp-action="MenuGuncelle" method="post" novalidate>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            @*  Menu Adı  *@
+            <div class="mb-3">
+                <label asp-for="MenuAdi" class="form-label fw-semibold"></label>
+                <input asp-for="MenuAdi" class="form-control" />
+                <span asp-validation-for="MenuAdi" class="text-danger small"></span>
+            </div>
+
+            @* Url *@
+            <div class="mb-3">
+                <label asp-for="Url" class="form-label fw-semibold"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Icon" class="form-label fw-semibold"></label>
+                <input asp-for="Icon" class="form-control" />
+                <span asp-validation-for="Icon" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Sira" class="form-label fw-semibold"></label>
+                <input asp-for="Sira" class="form-control" />
+                <span asp-validation-for="Sira" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AktifMi" class="form-check-label"></label>
+                <input asp-for="AktifMi" class="form-check-input" />
+                <span asp-validation-for="MenuAdi" class="text-danger small"></span>
+            </div>
+
+            @*  Butonlar  *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="Menu" asp-action="MenuListesi" class="btn btn-outline-danger">Vazgeç</a>
+                <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

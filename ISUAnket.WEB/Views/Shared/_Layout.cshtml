@@ -20,6 +20,34 @@
     <link rel="stylesheet" href="~/ISUAnket.WEB.styles.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <link href="~/css/datatables.min.css" rel="stylesheet" />
+
+    <style>
+        /* Navbar link hover efektleri */
+        .navbar-nav .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+            .navbar-nav .nav-link::after {
+                content: "";
+                position: absolute;
+                width: 0%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: #0d6efd; /* Bootstrap mavisi */
+                transition: width 0.3s ease;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #0d6efd !important;
+                text-shadow: 0 0 4px rgba(13, 110, 253, 0.3);
+            }
+
+                .navbar-nav .nav-link:hover::after {
+                    width: 100%;
+                }
+    </style>
 </head>
 <body>
     <header>
@@ -28,16 +56,15 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/img/isu.png" alt="Logo" style="height: 40px;" />
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Ana Sayfa</a>
                         </li>
-                        @if (rol == "SüperAdmin")
+                        @* @if (rol == "SüperAdmin")
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="yonetimDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,12 +94,12 @@
                                     <li><a class="dropdown-item" asp-controller="Cevap" asp-action="CevapListesi">Soru Sonuçları</a></li>
                                 </ul>
                             </li>
-                        }
+                        } *@
                         
                         
-                    </ul>
+                    </ul> 
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ms-auto">
                         @if (string.IsNullOrEmpty(kullaniciId))
                         {
                             <li class="nav-item">

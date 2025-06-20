@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Menu>
+@{
+    ViewData["Title"] = "Menüler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<a asp-action="MenuEkle" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus"></i> Menü Ekle</a>
+
+<br />
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>Menü Adı</th>
+            <th>Menü Bağlantısı</th>
+            <th>İkon</th>
+            <th>Sıra</th>
+            <th>Durum</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.MenuAdi</td>
+                <td>@item.Url</td>
+                <td>@item.Icon</td>
+                <td>@item.Sira</td>
+                <td>
+                    @if (item.AktifMi == true)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-outline-info btn-sm" asp-action="MenuGuncelle" asp-route-id="@item.Id"><i class="fa-solid fa-edit" title="Menü bilgilerini değiştirir"></i> </a>
+                    <a asp-action="MenuDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Menünün durumunu değiştirmek istediğinize emin misiniz?')" title="Menünün durumunu değiştirir"><i class="fa fa-refresh"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,10 +1,13 @@
-﻿@model IEnumerable<Kullanici>
+﻿@using ISUAnket.WEB.Helpers
+@model IEnumerable<Kullanici>
 @{
-    ViewData["Title"] = "Kullanıcı Listesi";
+    ViewData["Title"] = "Kullanıcılar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var rol = Context.Session.GetString("KullaniciRolu");
 }
+
+
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
@@ -27,7 +30,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.TCKN</td>
+                <td>@TCKNHelper.MaskeliTCKN(item.TCKN)</td>
                 <td>@item.KulaniciAdi</td>
                 <td>@item.Ad @item.Soyad</td>
                 <td>

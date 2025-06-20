@@ -1,0 +1,201 @@
+﻿@using System.Security.Claims @* cookie ile giriş kontrol işlemlerinde kullanılır *@
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var rol = User.FindFirst(ClaimTypes.Role)?.Value;
+    var kullaniciId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<style>
+    .hover-shadow {
+  position: relative;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.5s ease,
+              border-color 0.5s ease,
+              background-color 0.5s ease;
+  overflow: hidden;
+  perspective: 800px; /* 3D dönüş için perspektif */
+}
+
+.hover-shadow::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+  transform: rotate(25deg) translateX(-100%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+  border-radius: 16px;
+  z-index: 2;
+}
+
+.hover-shadow:hover::before {
+  transform: rotate(25deg) translateX(100%);
+}
+
+.hover-shadow:hover {
+  transform: translateY(-12px) scale(1.1) rotateX(6deg) rotateY(4deg);
+  box-shadow:
+    0 20px 40px rgba(13, 110, 253, 0.6),  /* parlak mavi glow */
+    0 10px 20px rgba(0, 0, 0, 0.25);
+  border-color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.hover-shadow:hover .card-text {
+  background: linear-gradient(90deg, #0d6efd, #6610f2, #6f42c1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  animation: shimmer 2.5s infinite;
+  transition: none;
+  position: relative;
+  z-index: 3;
+}
+
+@@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+</style>
+
+<div class="container mt-4">
+    <div class="row g-3">
+
+        @*  Anasayfa (Herkes görebilir: SüperAdmin ve Admin) *@
+        @if (rol == "SüperAdmin" || rol == "Admin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Admin/Index" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/home.png" alt="İstatistikler" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Anasayfa</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  İstatistikler (Herkes görebilir: SüperAdmin ve Admin) *@
+        @if (rol == "SüperAdmin" || rol == "Admin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Dashboard/Index" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/statistics.png" alt="İstatistikler" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">İstatistikler</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Birimler (Sadece SüperAdmin) *@
+        @if (rol == "SüperAdmin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Birim/BirimListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/corporation.png" alt="Birimler" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Birimler</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Roller (Sadece SüperAdmin) *@
+        @if (rol == "SüperAdmin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Rol/RolListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/team.png" alt="Roller" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Roller</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Kullanıcılar (Sadece SüperAdmin) *@
+        @if (rol == "SüperAdmin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Kullanici/KullaniciListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/userGroup.png" alt="Kullanıcılar" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Kullanıcılar</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Anketler (SüperAdmin ve Admin) *@
+        @if (rol == "SüperAdmin" || rol == "Admin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Anket/AnketListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/surveys.png" alt="Anketler" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Anketler</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Sorular (SüperAdmin ve Admin) *@
+        @if (rol == "SüperAdmin" || rol == "Admin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Soru/SoruListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/questions.png" alt="Sorular" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Sorular</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+        @*  Soru Sonuçları (SüperAdmin ve Admin) *@
+        @if (rol == "SüperAdmin" || rol == "Admin")
+        {
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                <a href="/Cevap/CevapListesi" class="text-decoration-none">
+                    <div class="card text-center shadow-sm h-100 hover-shadow">
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <img src="~/img/menuIcons/questionResult.png" alt="Soru Sonuçları" style="height:40px;" class="mb-2" />
+                            <p class="card-text fw-semibold text-dark">Soru Sonuçları</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+    </div>
+</div>

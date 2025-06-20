@@ -41,6 +41,12 @@ builder.Services.AddScoped<ICevapService, CevapManager>();
 builder.Services.AddScoped<IBirimRepository, BirimRepository>();
 builder.Services.AddScoped<IBirimService, BirimManager>();
 
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<IMenuService, MenuManager>();
+
+builder.Services.AddScoped<IMenuRolRepository, MenuRolRepository>();
+builder.Services.AddScoped<IMenuRolService, MenuRolManager>();
+
 //eppluss lisansýz kullaným için ISU takma adý kullanýldý. Farklý bir adda kullanýlabilir
 ExcelPackage.License.SetNonCommercialPersonal("ISU");
 
@@ -55,7 +61,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Kullanici/Login";
         options.LogoutPath = "/Kullanici/Logout";
         options.AccessDeniedPath = "/Home/Yetkisiz";
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); //30 dakika gecerlidir
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(1); //1 dakika gecerlidir
         options.SlidingExpiration = true;
     });
 

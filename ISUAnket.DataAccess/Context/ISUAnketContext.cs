@@ -26,6 +26,9 @@ namespace ISUAnket.DataAccess.Context
         public DbSet<Rol> Roller { get; set; }
         public DbSet<Birim> Birimler { get; set; }
 
+        public DbSet<Menu> Menuler { get; set; }
+        public DbSet<MenuRol> MenuRoller { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyUtcDateTimeConverter();

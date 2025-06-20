@@ -14,12 +14,7 @@ namespace ISUAnket.EntityLayer.Enums
         [Display(Name ="Sayısal")]
         Sayisal=1,
         [Display(Name ="Tarih")]
-        Tarih=2, 
-        [Display(Name ="Email")]
-        Email=3,
-        [Display(Name = "Virgüllü Sayı")]
-        Double = 4,
-        [Display(Name = "Parasal Değer")]
-        Decimal = 5
+        Tarih=2 
+        
     }
 }

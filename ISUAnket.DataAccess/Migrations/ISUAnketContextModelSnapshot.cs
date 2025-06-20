@@ -89,6 +89,10 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Property<bool>("AktifMi")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("BirimKod")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Birimler", "ANKET");
@@ -183,6 +187,62 @@ namespace ISUAnket.DataAccess.Migrations
                     b.HasIndex("RolId");
 
                     b.ToTable("Kullanicilar", "ANKET");
+                });
+
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("MenuAdi")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("Sira")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menuler", "ANKET");
+                });
+
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.MenuRol", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RolId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.HasIndex("RolId");
+
+                    b.ToTable("MenuRoller", "ANKET");
                 });
 
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Rol", b =>
@@ -305,6 +365,25 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Navigation("Rol");
                 });
 
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.MenuRol", b =>
+                {
+                    b.HasOne("ISUAnket.EntityLayer.Entities.Menu", "Menu")
+                        .WithMany("MenuRoller")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ISUAnket.EntityLayer.Entities.Rol", "Rol")
+                        .WithMany("MenuRoller")
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Rol");
+                });
+
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Soru", b =>
                 {
                     b.HasOne("ISUAnket.EntityLayer.Entities.Anket", "Anket")
@@ -338,9 +417,16 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Navigation("Cevaplar");
                 });
 
+            modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Menu", b =>
+                {
+                    b.Navigation("MenuRoller");
+                });
+
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Rol", b =>
                 {
                     b.Navigation("Kullanicilar");
+
+                    b.Navigation("MenuRoller");
                 });
 
             modelBuilder.Entity("ISUAnket.EntityLayer.Entities.Soru", b =>

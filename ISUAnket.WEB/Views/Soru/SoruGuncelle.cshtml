@@ -4,81 +4,75 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card shadow p-4 w-100" style="max-width: 600px;">
 
-<form asp-action="SoruGuncelle" method="post" class="container mt-5">
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="SoruGuncelle" method="post" novalidate>
 
-    <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+            <input type="hidden" asp-for="Id" />
 
-            @* Anket dropdown *@
-            <div class="form-group mt-3">
-                <label asp-for="AnketId"></label>
-                <select asp-for="AnketId" asp-items="ViewBag.AnketListesi" class="form-control"></select>
-                <span asp-validation-for="AnketId" class="text-danger"></span>
+            @*  Anket  *@
+            <div class="mb-3">
+                <label asp-for="AnketId" class="form-label fw-semibold"></label>
+                <select asp-for="AnketId" asp-items="ViewBag.AnketListesi" class="form-select"></select>
+                <span asp-validation-for="AnketId" class="text-danger small"></span>
             </div>
 
-            @* SoruMetni *@
-            <div class="form-group mt-3">
-                <label asp-for="SoruMetni"></label>
+            @*  Soru Metni  *@
+            <div class="mb-3">
+                <label asp-for="SoruMetni" class="form-label fw-semibold"></label>
                 <textarea asp-for="SoruMetni" class="form-control" rows="2"></textarea>
-                <span asp-validation-for="SoruMetni" class="text-danger"></span>
+                <span asp-validation-for="SoruMetni" class="text-danger small"></span>
             </div>
 
-            @* SoruTipi *@
-            <div class="form-group mt-3">
-                <label asp-for="SoruTipi"></label>
-                <select asp-for="SoruTipi" asp-items="Html.GetEnumSelectList<SoruTipiEnum>()" class="form-control" id="soruTipi"></select>
-                <span asp-validation-for="SoruTipi" class="text-danger"></span>
+            @* Soru Tipi  *@
+            <div class="mb-3">
+                <label asp-for="SoruTipi" class="form-label fw-semibold"></label>
+                <select asp-for="SoruTipi" asp-items="Html.GetEnumSelectList<SoruTipiEnum>()" class="form-select" id="soruTipi">
+                    <option value="">Seçiniz</option>
+                </select>
+                <span asp-validation-for="SoruTipi" class="text-danger small"></span>
             </div>
 
-            @* VeriTipi dropdown *@
-            <div class="form-group mt-3">
-                <label asp-for="VeriTipi"></label>
-                <select asp-for="VeriTipi" asp-items="Html.GetEnumSelectList<VeriTipiEnum>()" class="form-control"></select>
-                <span asp-validation-for="VeriTipi" class="text-danger"></span>
+            @*  Veri Tipi  *@
+            <div class="mb-3">
+                <label asp-for="VeriTipi" class="form-label fw-semibold"></label>
+                <select asp-for="VeriTipi" asp-items="Html.GetEnumSelectList<VeriTipiEnum>()" class="form-select">
+                    <option value="">Seçiniz</option>
+                </select>
+                <span asp-validation-for="VeriTipi" class="text-danger small"></span>
             </div>
 
-            @* ZorunluMu *@
-            <div class="form-check mt-3">
+            @*  Zorunlu Mu  *@
+            <div class="form-check mb-3">
                 <input asp-for="ZorunluMu" class="form-check-input" type="checkbox" id="ZorunluMu" />
-                <label asp-for="ZorunluMu" class="form-check-label"></label>
-                <span asp-validation-for="ZorunluMu" class="text-danger d-block"></span>
+                <label asp-for="ZorunluMu" class="form-check-label fw-semibold"></label>
+                <span asp-validation-for="ZorunluMu" class="text-danger small d-block"></span>
             </div>
 
-            @* seçenekler *@
-            <div class="form-group mt-3" id="seceneklerDiv" style="display:none;">
-                <label>Seçenekler</label>
-
+            @*  Seçenekler  *@
+            <div class="mb-3" id="seceneklerDiv" style="display:none;">
+                <label class="form-label fw-semibold">Seçenekler</label>
                 <div id="seceneklerListesi"></div>
-
-                <button type="button" id="secenekEkleBtn" class="btn btn-sm btn-outline-success mt-2">Seçenek Ekle</button>
-
+                <button type="button" id="secenekEkleBtn" class="btn btn-outline-success btn-sm mt-2">Seçenek Ekle</button>
                 <input type="hidden" asp-for="SoruSecenekleri" id="SoruSecenekleri" />
-                <span asp-validation-for="SoruSecenekleri" class="text-danger"></span>
+                <span asp-validation-for="SoruSecenekleri" class="text-danger small"></span>
             </div>
 
-            @* soru seçenekleri ilk baştaki kullanım *@
-            @* <div class="form-group mt-3" id="seceneklerDiv" style="display:none;">
-                <label asp-for="SoruSecenekleri"></label>
-                <textarea asp-for="SoruSecenekleri" class="form-control" rows="3" placeholder="Çoktan seçmeli için virgülle ayırın"></textarea>
-                <span asp-validation-for="SoruSecenekleri" class="text-danger"></span>
-            </div> *@
-
-            <div class="form-group mt-4 text-center">
-                <a asp-controller="Soru" asp-action="SoruListesi" class="btn btn-outline-danger btn-sm me-2">İptal</a>
+            @*  Butonlar  *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="Soru" asp-action="SoruListesi" class="btn btn-outline-danger btn-sm">Vazgeç</a>
                 <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
             </div>
 
-        </div>
+        </form>
+
     </div>
-
-</form>
-
+</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

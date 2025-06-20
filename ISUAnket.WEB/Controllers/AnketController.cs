@@ -182,5 +182,20 @@ namespace ISUAnket.WEB.Controllers
 
             return RedirectToAction(nameof(AnketListesi));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AnketSil(int id)
+        {
+            var anket = await _anketService.GetByIdServiceAsync(id);
+
+            if (anket == null)
+            {
+                return NotFound("Silinecek anket bulunamadı.");
+            }
+
+            await _anketService.DeleteServiceAsync(anket);
+
+            return RedirectToAction(nameof(AnketListesi));
+        }
     }
 }

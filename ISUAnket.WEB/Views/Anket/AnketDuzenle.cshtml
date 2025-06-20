@@ -4,61 +4,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="d-flex align-items-center justify-content-center min-vh-50">
+    <div class="card shadow p-4 w-100" style="max-width: 600px;">
 
-<form asp-action="AnketDuzenle" method="post">
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="AnketDuzenle" method="post" novalidate>
 
-    <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+            <input type="hidden" asp-for="Id" />
 
-            @* AnketAdı *@
-            <div class="form-group mt-3">
-                <label asp-for="Ad"></label>
+            @*  Anket Adı  *@
+            <div class="mb-3">
+                <label asp-for="Ad" class="form-label fw-semibold"></label>
                 <input asp-for="Ad" class="form-control" />
-                <span asp-validation-for="Ad" class="text-danger"></span>
+                <span asp-validation-for="Ad" class="text-danger small"></span>
             </div>
 
-            @* BaşlangıçTarihi *@
-            <div class="form-group mt-3">
-                <label asp-for="BaslangicTarihi"></label>
-                <input asp-for="BaslangicTarihi" class="form-control" />
-                <span asp-validation-for="BaslangicTarihi" class="text-danger"></span>
+            @*  Başlangıç Tarihi  *@
+            <div class="mb-3">
+                <label asp-for="BaslangicTarihi" class="form-label fw-semibold"></label>
+                <input asp-for="BaslangicTarihi" class="form-control" type="date" />
+                <span asp-validation-for="BaslangicTarihi" class="text-danger small"></span>
             </div>
 
-            @* BitişTarihi *@
-            <div class="form-group mt-3">
-                <label asp-for="BitisTarihi"></label>
-                <input asp-for="BitisTarihi" class="form-control" />
-                <span asp-validation-for="BitisTarihi" class="text-danger"></span>
+            @*  Bitiş Tarihi  *@
+            <div class="mb-3">
+                <label asp-for="BitisTarihi" class="form-label fw-semibold"></label>
+                <input asp-for="BitisTarihi" class="form-control" type="date" />
+                <span asp-validation-for="BitisTarihi" class="text-danger small"></span>
             </div>
 
-            @* AnketDurumu dropdown *@
-            <div class="form-group mt-3">
-                <label asp-for="AnketDurumu"></label>
-                <select asp-for="AnketDurumu" class="form-control" asp-items="Html.GetEnumSelectList<AnketDurumuEnum>()"></select>
-                <span asp-validation-for="AnketDurumu" class="text-danger"></span>
+            @*  Anket Durumu  *@
+            <div class="mb-3">
+                <label asp-for="AnketDurumu" class="form-label fw-semibold"></label>
+                <select asp-for="AnketDurumu" class="form-select" asp-items="Html.GetEnumSelectList<AnketDurumuEnum>()"></select>
+                <span asp-validation-for="AnketDurumu" class="text-danger small"></span>
             </div>
 
-            @* AktifMi *@
-            <div class="form-group form-check mt-3">
-                <input asp-for="AktifMi" class="form-check-input" type="checkbox" />
-                <label asp-for="AktifMi" class="form-check-label"></label>
-                <span asp-validation-for="AktifMi" class="text-danger"></span>
+            @*  Aktif Mi  *@
+            <div class="form-check mt-3">
+                <input asp-for="AktifMi" class="form-check-input" type="checkbox" id="AktifMi" />
+                <label asp-for="AktifMi" class="form-check-label fw-semibold"></label>
+                <span asp-validation-for="AktifMi" class="text-danger d-block small"></span>
             </div>
 
-            <div class="form-group mt-3 text-center">
-                <a asp-controller="Anket" asp-action="AnketListesi" class="btn btn-outline-danger btn-sm">İptal</a>
+            @*  Butonlar  *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="Anket" asp-action="AnketListesi" class="btn btn-outline-danger btn-sm">Vazgeç</a>
                 <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
             </div>
 
-        </div>
+        </form>
     </div>
-
-</form>
+</div>
 
 @section Scripts {
     @{

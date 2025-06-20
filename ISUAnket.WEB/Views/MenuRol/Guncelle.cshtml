@@ -1,0 +1,51 @@
+﻿@model MenuRol
+@{
+    ViewData["Title"] = "Guncelle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex align-items-center justify-content-center min-vh-50">
+    <div class="card shadow p-4 w-100" style="max-width: 500px;">
+
+        <h4 class="text-center mb-4">@ViewData["Title"]</h4>
+
+        <form asp-action="Guncelle" method="post" novalidate>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            @*  Menü Seçimi  *@
+            <div class="mb-3">
+                <label asp-for="MenuId" class="form-label fw-semibold">Menü Seçiniz</label>
+                <select asp-for="MenuId" asp-items="ViewBag.Menuler" class="form-select">
+                    <option value="">Seçiniz</option>
+                </select>
+                <span asp-validation-for="MenuId" class="text-danger small"></span>
+            </div>
+
+            @*  Rol Seçimi  *@
+            <div class="mb-3">
+                <label asp-for="RolId" class="form-label fw-semibold">Rol Seçiniz</label>
+                <select asp-for="RolId" asp-items="ViewBag.Roller" class="form-select">
+                    <option value="">Seçiniz</option>
+                </select>
+                <span asp-validation-for="RolId" class="text-danger small"></span>
+            </div>
+
+            @*  Butonlar  *@
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <a asp-controller="MenuRol" asp-action="Index" class="btn btn-outline-danger">Vazgeç</a>
+                <button type="submit" class="btn btn-outline-info btn-sm">Güncelle</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
