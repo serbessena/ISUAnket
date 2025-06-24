@@ -85,7 +85,7 @@ namespace ISUAnket.Business.Managers
         public async Task<bool> RegisterAsync(Kullanici yeniKullanici)
         {
             var mevcut = await _kullaniciRepository.GetAllAsync(x => x.KulaniciAdi == yeniKullanici.KulaniciAdi);
-            var tcknKontrol = await _kullaniciRepository.GetAllAsync(x => x.TCKN == yeniKullanici.TCKN);
+            var tcknKontrol = await _kullaniciRepository.GetAllAsync(x => x.TCKN == yeniKullanici.TCKN || x.KulaniciAdi==yeniKullanici.KulaniciAdi);
 
 
             if (mevcut.Any() || tcknKontrol.Any())
