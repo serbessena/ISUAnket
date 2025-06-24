@@ -54,6 +54,15 @@
                 <span asp-validation-for="ZorunluMu" class="text-danger small d-block"></span>
             </div>
 
+            @*  Aktif Mi  *@
+            <div class="form-check mt-3">
+                <input asp-for="AktifMi" class="form-check-input" type="checkbox" id="AktifMi" />
+                <label asp-for="AktifMi" class="form-check-label fw-semibold"></label>
+                <span asp-validation-for="AktifMi" class="text-danger d-block small"></span>
+            </div>
+
+            <br />
+
             @*  Seçenekler  *@
             <div class="mb-3" id="seceneklerDiv" style="display:none;">
                 <label class="form-label fw-semibold">Seçenekler</label>

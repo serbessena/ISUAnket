@@ -18,7 +18,7 @@ namespace ISUAnket.EntityLayer.Entities
         [MinLength(5,ErrorMessage ="Rol adı en az 5 karakter uzunluğunda olmalıdır!")]
         public string RolAdi { get; set; }
 
-        [Display(Name ="Durum")]
+        [Display(Name ="Aktif mi?")]
         public bool AktifMi { get; set; } = true;
         public List<Kullanici> Kullanicilar { get; set; }
 

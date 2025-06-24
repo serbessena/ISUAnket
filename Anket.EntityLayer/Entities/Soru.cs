@@ -40,7 +40,7 @@ namespace ISUAnket.EntityLayer.Entities
         [Display(Name ="Düzenlenme Tarihi")]
         public DateTime? DuzenlenmeTarihi { get; set; }
 
-        [Display(Name ="Durum")]
+        [Display(Name ="Aktif mi")]
         public bool AktifMi { get; set; } = true;
 
         [Display(Name = "Zorunlu mu?")]

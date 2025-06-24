@@ -7,6 +7,15 @@
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
+@if (TempData["Hata"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="hataUyarisi">
+        <i class="fa fa-triangle-exclamation"></i>
+        @TempData["Hata"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+    </div>
+}
+
 <a asp-controller="Soru" asp-action="SoruEkle" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-plus"></i> Soru Ekle</a>
 
 <table class="table table-responsive table-hover" id="basic-datatables">
@@ -31,7 +40,15 @@
                 <td>@(item.AktifMi ? "Aktif" : "Pasif")</td>
                 <td>
                     <a asp-action="SoruGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm" title="Soruları düzenler"><i class="fa-solid fa-edit"></i></a>
-                    <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Sorunun aktifliği değiştirir"><i class="fa fa-refresh"></i></a>
+                    @* <a asp-action="SoruDurumDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Sorunun aktifliği değiştirir"><i class="fa fa-refresh"></i></a> *@
+
+                    <form asp-controller="Soru" asp-action="SoruSil" method="post" style="display:inline;"
+                          onsubmit="return confirm('Soru veritabanından silinecektir.Bu işlem geri alınamaz. Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Seçilen ögeyi siler">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
@@ -61,6 +78,16 @@
                     }
                 }
             });
+
+            @* Hata mesajını 5 saniye sonra otomatik gizle *@
+            setTimeout(function () {
+                const alert = document.getElementById("hataUyarisi");
+                if (alert) {
+                    alert.classList.remove("show");
+                    alert.classList.add("hide");
+                    setTimeout(() => alert.remove(), 500);
+                }
+            }, 5000);
         });
     </script>
 }

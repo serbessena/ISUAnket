@@ -1,5 +1,6 @@
 ﻿using ISUAnket.Business.Interfaces;
 using ISUAnket.EntityLayer.Entities;
+using ISUAnket.EntityLayer.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -60,6 +61,28 @@ namespace ISUAnket.WEB.Controllers
 
             int kullaniciId = int.Parse(kullaniciIdClaim.Value);
 
+            #region Anket durumuna göre Soru ekleme kontrolü
+
+            if (model.AnketId == null)
+            {
+                ModelState.AddModelError("", "Lütfen bir anket seçiniz.");
+                var anketler = await _anketService.GetListAllServiceAsync();
+                ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
+                return View(model);
+            }
+
+            var anket = await _anketService.GetByIdServiceAsync(model.AnketId.Value);
+            if (anket?.AnketDurumu == AnketDurumuEnum.Yayınlandı)
+            {
+                ModelState.AddModelError("", "Yayınlanmış ankete soru eklenemez.");
+                var anketler = await _anketService.GetListAllServiceAsync();
+                ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
+                return View(model);
+            }
+
+            #endregion
+
+
             //model.OlusturanKullaniciId = kullaniciId.Value; //Session ile giriş işlemlerinde kullanılır
             model.OlusturanKullaniciId = kullaniciId;
             model.OlusturmaTarihi = DateTime.Now;
@@ -118,6 +141,32 @@ namespace ISUAnket.WEB.Controllers
             }
 
 
+            #region Anket durumuna göre Soru güncelleme kontrolü
+
+            if (mevcutSoru.AnketId==null)
+            {
+                ModelState.AddModelError("", "Anket bilgisi bulunamadı!");
+
+                var anketler = await _anketService.GetListAllServiceAsync();
+                ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
+
+                return View(model);
+            }
+
+            var anket = await _anketService.GetByIdServiceAsync(mevcutSoru.AnketId.Value);
+
+            if (anket?.AnketDurumu==AnketDurumuEnum.Yayınlandı)
+            {
+                ModelState.AddModelError("", "Yayınlanmış anketteki soru güncellenemez!");
+
+                var anketler = await _anketService.GetListAllServiceAsync();
+                ViewBag.AnketListesi = new SelectList(anketler, "Id", "Ad");
+
+                return View(model);
+            }
+
+            #endregion
+
             mevcutSoru.SoruMetni = model.SoruMetni;
             mevcutSoru.AnketId = model.AnketId;
             mevcutSoru.ZorunluMu = model.ZorunluMu;
@@ -138,6 +187,41 @@ namespace ISUAnket.WEB.Controllers
         public async Task<IActionResult> SoruDurumDegistir(int id)
         {
             await _soruService.ChangeActivePasiveStatusServiceAsync(id);
+
+            return RedirectToAction(nameof(SoruListesi));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SoruSil(int id)
+        {
+            var soru = await _soruService.GetByIdServiceAsync(id);
+
+            if (soru == null)
+            {
+                return NotFound("Silinecek soru bulunamadı.");
+            }
+
+            #region Anket durumuna göre Soru silme kontrolü
+
+            if (soru.AnketId==null)
+            {
+                TempData["Hata"] = "Ankete ait bilgi bulunamadığı için silme işlemi gerçekleştirilemedi!";
+
+                return RedirectToAction(nameof(SoruListesi));
+            }
+
+            var anket=await _anketService.GetByIdServiceAsync(soru.AnketId.Value);
+
+            if (anket?.AnketDurumu==AnketDurumuEnum.Yayınlandı)
+            {
+                TempData["Hata"] = "Yayınlanmış ankete ait soru silinemez!";
+
+                return RedirectToAction(nameof(SoruListesi));
+            }
+
+            #endregion
+
+            await _soruService.DeleteServiceAsync(soru);
 
             return RedirectToAction(nameof(SoruListesi));
         }

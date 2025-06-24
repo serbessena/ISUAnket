@@ -20,7 +20,8 @@
               border-color 0.5s ease,
               background-color 0.5s ease;
   overflow: hidden;
-  perspective: 800px; /* 3D dönüş için perspektif */
+  perspective: 800px;
+  padding: 20px; /* Kart içeriği genişletildi */
 }
 
 .hover-shadow::before {
@@ -45,7 +46,7 @@
 .hover-shadow:hover {
   transform: translateY(-12px) scale(1.1) rotateX(6deg) rotateY(4deg);
   box-shadow:
-    0 20px 40px rgba(13, 110, 253, 0.6),  /* parlak mavi glow */
+    0 20px 40px rgba(13, 110, 253, 0.6),
     0 10px 20px rgba(0, 0, 0, 0.25);
   border-color: #0d6efd;
   background-color: rgba(13, 110, 253, 0.05);
@@ -64,6 +65,14 @@
   z-index: 3;
 }
 
+.card-body img {
+  height: 60px !important; /* Görsel boyutu artırıldı */
+}
+
+.card-text {
+  font-size: 1.05rem; /* Yazı boyutu büyütüldü */
+}
+
 @@keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -75,12 +84,12 @@
 </style>
 
 <div class="container mt-4">
-    <div class="row g-3">
+    <div class="row g-4">
 
         @*  Anasayfa (Herkes görebilir: SüperAdmin ve Admin) *@
-        @if (rol == "SüperAdmin" || rol == "Admin")
+        @* @if (rol == "SüperAdmin" || rol == "Admin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Admin/Index" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -90,12 +99,12 @@
                     </div>
                 </a>
             </div>
-        }
+        } *@
 
         @*  İstatistikler (Herkes görebilir: SüperAdmin ve Admin) *@
         @if (rol == "SüperAdmin" || rol == "Admin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Dashboard/Index" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -110,7 +119,7 @@
         @*  Birimler (Sadece SüperAdmin) *@
         @if (rol == "SüperAdmin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Birim/BirimListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -125,7 +134,7 @@
         @*  Roller (Sadece SüperAdmin) *@
         @if (rol == "SüperAdmin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Rol/RolListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -140,7 +149,7 @@
         @*  Kullanıcılar (Sadece SüperAdmin) *@
         @if (rol == "SüperAdmin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Kullanici/KullaniciListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -155,7 +164,7 @@
         @*  Anketler (SüperAdmin ve Admin) *@
         @if (rol == "SüperAdmin" || rol == "Admin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Anket/AnketListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -170,7 +179,7 @@
         @*  Sorular (SüperAdmin ve Admin) *@
         @if (rol == "SüperAdmin" || rol == "Admin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Soru/SoruListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -185,7 +194,7 @@
         @*  Soru Sonuçları (SüperAdmin ve Admin) *@
         @if (rol == "SüperAdmin" || rol == "Admin")
         {
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="/Cevap/CevapListesi" class="text-decoration-none">
                     <div class="card text-center shadow-sm h-100 hover-shadow">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">

@@ -110,6 +110,21 @@ namespace ISUAnket.WEB.Controllers
             return RedirectToAction(nameof(KullaniciListesi));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> KullaniciSil(int id)
+        {
+            var anket = await _kullaniciService.GetByIdServiceAsync(id);
+
+            if (anket == null)
+            {
+                return NotFound("Silinecek kullanıcı bulunamadı.");
+            }
+
+            await _kullaniciService.DeleteServiceAsync(anket);
+
+            return RedirectToAction(nameof(KullaniciListesi));
+        }
+
         [AllowAnonymous]
         public IActionResult Register()
         {

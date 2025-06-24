@@ -60,7 +60,14 @@
                     }
 
                     <a class="btn btn-outline-info btn-sm" asp-action="KullaniciGuncelle" asp-route-id="@item.Id"><i class="fa-solid fa-edit" title="Kullanıcının bilgilerini günceller"></i></a>
-                    <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh" title="Kullanıcının durumunu değiştirir"></i></a>
+                    @* <a asp-action="KullaniciDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh" title="Kullanıcının durumunu değiştirir"></i></a> *@
+                    <form asp-controller="Kullanici" asp-action="KullaniciSil" method="post" style="display:inline;"
+                          onsubmit="return confirm('Kullanıcı veritabanından silinecektir. Bu işlem geri alınamaz.Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Seçilen ögeyi siler">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         }

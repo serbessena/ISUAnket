@@ -56,7 +56,7 @@ namespace ISUAnket.EntityLayer.Entities
         [Display(Name ="Son Çıkış Tarihi")]
         public DateTime? SonCikisTarihi { get; set; }
 
-        [Display(Name ="Durum")]
+        [Display(Name ="Aktif mi")]
         public bool AktifMi { get; set; } = true;
 
         [Display(Name ="Rol")]

@@ -8,6 +8,7 @@ using ISUAnket.DataAccess.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using QuestPDF.Infrastructure;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,9 @@ builder.Services.AddScoped<IMenuRolService, MenuRolManager>();
 
 //eppluss lisansýz kullaným için ISU takma adý kullanýldý. Farklý bir adda kullanýlabilir
 ExcelPackage.License.SetNonCommercialPersonal("ISU");
+
+// QuestPDF lisans ayari
+QuestPDF.Settings.License = LicenseType.Community;
 
 //ankette link olusturulurken Id deðerini sifrelemek icin kullanilir
 builder.Services.AddDataProtection();

@@ -11,7 +11,7 @@
 
 <br />
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive" id="basic-datatables">
     <thead>
         <tr>
             <th>Anket Adı</th>
@@ -70,9 +70,9 @@
                 </td>
                 <td>
                     <a class="btn btn-outline-info btn-sm" asp-action="AnketDuzenle" asp-route-id="@item.Id" title="Aktif bilgilerini düzenler"><i class="fa-solid fa-edit"></i> </a>
-                    <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Aktif pasif değişimi yapar"><i class="fa fa-refresh"></i> </a>
+                    @* <a asp-action="AnketDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Aktif pasif değişimi yapar"><i class="fa fa-refresh"></i> </a> *@
 
-                    <form asp-action="AnketSil" asp-controller="Anket" method="post" style="display:inline;"
+                    <form asp-controller="Anket" asp-action="AnketSil" method="post" style="display:inline;"
                           onsubmit="return confirm('Anket veritabanından silinecektir. Silmek istediğinize emin misiniz?');">
                         <input type="hidden" name="id" value="@item.Id" />
                         <button type="submit" class="btn btn-outline-danger btn-sm" title="Seçilen ögeyi siler">
@@ -87,3 +87,29 @@
 </table>
 
 
+@section Scripts {
+
+    @* dataTable.js kullanımı *@
+    <script>
+        $(document).ready(function () {
+            $("#basic-datatables").DataTable({
+                "language": {
+                    "decimal": ",",
+                    "thousands": ".",
+                    "lengthMenu": "Sayfa başına _MENU_ kayıt göster",
+                    "zeroRecords": "Kayıt bulunamadı",
+                    "info": "_TOTAL_ kayıttan _START_ - _END_ arası gösteriliyor",
+                    "infoEmpty": "Kayıt yok",
+                    "infoFiltered": "(_MAX_ kayıt içinden filtrelendi)",
+                    "search": "Ara:",
+                    "paginate": {
+                        "first": "<<",
+                        "last": ">>",
+                        "next": ">",
+                        "previous": "<"
+                    }
+                }
+            });
+        });
+    </script>
+}

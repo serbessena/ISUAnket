@@ -145,7 +145,7 @@ namespace ISUAnket.WEB.Controllers
 
             mevcutAnket.Ad = model.Ad;
             mevcutAnket.BaslangicTarihi = model.BaslangicTarihi;
-            mevcutAnket.BitisTarihi = model.BitisTarihi;
+            mevcutAnket.BitisTarihi = model.BitisTarihi.Date.AddDays(1).AddSeconds(-1);
             mevcutAnket.Link=model.Link;
             mevcutAnket.AnketDurumu=model.AnketDurumu;
             mevcutAnket.AktifMi=model.AktifMi;

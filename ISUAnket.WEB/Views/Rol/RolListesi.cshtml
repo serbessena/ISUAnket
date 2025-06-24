@@ -35,7 +35,15 @@
                 </td>
                 <td>
                     <a class="btn btn-outline-info btn-sm" asp-action="RolGuncelle" asp-route-id="@item.Id"><i class="fa-solid fa-edit" title="Rolün bilgilerini değiştirir"></i> </a>
-                    <a asp-action="RolDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Rolün durumunu değiştirir"><i class="fa fa-refresh"></i></a>
+                    @* <a asp-action="RolDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')" title="Rolün durumunu değiştirir"><i class="fa fa-refresh"></i></a> *@
+
+                    <form asp-controller="Rol" asp-action="RolSil" method="post" style="display:inline;"
+                          onsubmit="return confirm('Rol veritabanından silinecektir.Bu işlem geri alınamaz. Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Seçilen ögeyi siler">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         }

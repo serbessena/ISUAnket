@@ -9,17 +9,51 @@
     int pageSize = (int)(ViewData["PageSize"] ?? 10);
     int currentPage = (int)(ViewData["CurrentPage"] ?? 1);
     int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+    //birimler dorpdown filtresindeki çoklu birim seçme için tanımlandı
+    var seciliBirimler = ViewData["SeciliBirimIdListesi"] as List<int> ?? new List<int>();
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
 
-<form asp-controller="Cevap" asp-action="ExportToExcel" method="post">
-    <button type="submit" class="btn btn-outline-success btn-sm mb-3"><i class="fa fa-file-excel-o"></i> Excel'e Aktar</button>
+
+
+
+<form asp-action="CevapListesi" method="get" class="row mb-4">
+    <div class="col-md-3">
+        <label for="anketId" class="form-label">Ankete Göre Filtrele</label>
+        @Html.DropDownList("anketId", (SelectList)ViewBag.AktifAnketler, "Tüm Anketler", new {
+            @class = "form-select",
+            id = "secilenAnketId",
+            onchange = "this.form.submit()"
+        })
+    </div>
+
+    <div class="col-md-3">
+        <label for="birimId" class="form-label">Birime Göre Filtrele</label>
+        <select id="secilenBirimId" name="birimId" multiple="multiple" class="form-select" onchange="this.form.submit()">
+                @foreach (var birim in (MultiSelectList)ViewBag.Birimler)
+                {
+                    var selected = seciliBirimler.Contains(Convert.ToInt32(birim.Value)) ? "selected" : "";
+                    @:<option value="@birim.Value" @selected>@birim.Text</option>
+                }
+        </select>
+    </div>
 </form>
 
-<form asp-controller="Cevap" asp-action="ExportToPdf" method="post">
-    <button type="submit" class="btn btn-outline-danger btn-sm mb-3"><i class="fa fa-file-pdf-o"></i> PDF'e Aktar</button>
-</form>
+<div class="d-flex align-items-start gap-2 mb-3">
+    <form asp-controller="Cevap" asp-action="ExportToExcel" method="post">
+        <button type="submit" class="btn btn-outline-success btn-sm">
+            <i class="fa fa-file-excel-o"></i> Excel'e Aktar
+        </button>
+    </form>
+
+    <form asp-controller="Cevap" asp-action="ExportToPdf" method="post">
+        <button type="submit" class="btn btn-outline-danger btn-sm">
+            <i class="fa fa-file-pdf-o"></i> PDF'e Aktar
+        </button>
+    </form>
+</div>
 
 <table class="table table-hover table-responsive table-striped">
     <thead>
@@ -32,9 +66,8 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model !=null)
+        @if (Model != null && Model.Any())
         {
-
             foreach (var item in Model)
             {
                 <tr>
@@ -44,7 +77,6 @@
                     <td>@item.Birim?.Ad</td>
                     <td>@item.CevapTarihi.ToShortDateString()</td>
                 </tr>
-                
             }
         }
         else
@@ -56,8 +88,56 @@
     </tbody>
 </table>
 
-<!-- SAYFALAMA KISMI -->
 @if (totalPages > 1)
+{
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("CevapListesi", new { page = currentPage - 1, anketId = ViewData["SeciliAnketId"], birimId = seciliBirimler })">Önceki</a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("CevapListesi", new { page = i, anketId = ViewData["SeciliAnketId"], birimId = seciliBirimler })">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("CevapListesi", new { page = currentPage + 1, anketId = ViewData["SeciliAnketId"], birimId = seciliBirimler })">Sonraki</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            @* anket  dropdown filtreleme *@
+            $('#secilenAnketId').select2({
+                language: "tr",
+                placeholder: "Bir anket seçiniz",
+                allowClear: true,
+                width: '100%'
+            });
+           
+
+            @* birim dropdown filtreleme *@
+             $('#secilenBirimId').select2({
+                language: "tr",
+                placeholder: "Bir veya daha fazla birim seçiniz",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+}
+
+
+@* filtresiz sayfalama *@
+@* @if (totalPages > 1)
 {
     <div class="d-flex justify-content-center">
         <nav aria-label="Page navigation">
@@ -82,4 +162,4 @@
             </ul>
         </nav>
     </div>
-}
+} *@

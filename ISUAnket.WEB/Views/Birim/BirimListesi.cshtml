@@ -35,7 +35,15 @@
                 </td>
                 <td>
                     <a asp-action="BirimGuncelle" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm"><i class="fa-solid fa-edit" title="Birimin bilgilerini günceller"></i></a>
-                    <a asp-action="BirimDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh" title="Birimin durumunu değiştirir"></i></a>
+                    @* <a asp-action="BirimDurumuDegistir" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm" onclick="return confirm('Durumu değiştirmek istediğinize emin misiniz?')"><i class="fa fa-refresh" title="Birimin durumunu değiştirir"></i></a> *@
+
+                    <form asp-controller="Birim" asp-action="BirimSil" method="post" style="display:inline;"
+                          onsubmit="return confirm('Birim veritabanından silinecektir.Bu işlem geri alınamaz. Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Seçilen ögeyi siler">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
