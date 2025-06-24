@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="8.0.7" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
+  </ItemGroup>
+
 </Project>
