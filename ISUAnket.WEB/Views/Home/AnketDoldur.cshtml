@@ -37,9 +37,25 @@
 
         @switch (Model.SoruTipi)
         {
-            case SoruTipiEnum.TekSatırMetin:
+            @* case SoruTipiEnum.TekSatırMetin:
                 <input type="text" name="@cevapKey" class="form-control" value="@cevapDegeri" />
+                break; *@
+
+            case SoruTipiEnum.TekSatırMetin:
+                switch (Model.VeriTipi)
+                {
+                    case VeriTipiEnum.Sayisal:
+                        <input type="number" name="@cevapKey" class="form-control" value="@cevapDegeri" />
+                        break;
+                    case VeriTipiEnum.Tarih:
+                        <input type="date" name="@cevapKey" class="form-control" value="@cevapDegeri" />
+                        break;
+                    default: // Metin
+                        <input type="text" name="@cevapKey" class="form-control" value="@cevapDegeri" />
+                        break;
+                }
                 break;
+                
 
             case SoruTipiEnum.ÇokSatırMetin:
                 <textarea name="@cevapKey" class="form-control" rows="4">@cevapDegeri</textarea>

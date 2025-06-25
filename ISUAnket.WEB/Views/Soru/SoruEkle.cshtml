@@ -37,16 +37,16 @@
                 <select asp-for="SoruTipi" class="form-select" asp-items="Html.GetEnumSelectList<SoruTipiEnum>()" id="soruTipi">
                     <option value="">Seçiniz</option>
                 </select>
-                <span asp-validation-for="SoruTipi" class="text-danger small"></span>
+                @* <span asp-validation-for="SoruTipi" class="text-danger small"></span> *@
             </div>
 
             @* Veri Tipi  *@
-            <div class="mb-3">
+            <div class="mb-3" id="veriTipiDiv" style="display:none;">
                 <label asp-for="VeriTipi" class="form-label fw-semibold"></label>
                 <select asp-for="VeriTipi" class="form-select" asp-items="Html.GetEnumSelectList<VeriTipiEnum>()">
                     <option value="">Seçiniz</option>
                 </select>
-                <span asp-validation-for="VeriTipi" class="text-danger small"></span>
+                @* <span asp-validation-for="VeriTipi" class="text-danger small"></span> *@
             </div>
 
             @*  Zorunlu Mu  *@
@@ -86,6 +86,7 @@
 
         $(document).ready(function () {
 
+            @* soru seçenekleri fonksiyonu *@
             function toggleSecenekler() {
                 var selectedValue = parseInt($("#soruTipi").val());
                 if (selectedValue === 2 || selectedValue === 3) {
@@ -95,15 +96,33 @@
                 }
             }
 
-            // Sayfa yüklenirken kontrol et
+            @* veri tipi için fonksiyon *@
+            function toggleVeriTipi() {
+                    var selectedValue = parseInt($("#soruTipi").val());
+                    var $veriTipi = $("#VeriTipi");
+
+                    if (selectedValue === 0) { // Tek Satır Metin
+                        $("#veriTipiDiv").show();
+                        $veriTipi.prop("required", true);
+                        $veriTipi.attr("oninvalid", "this.setCustomValidity('Lütfen bir veri tipi seçiniz.')");
+                        $veriTipi.attr("oninput", "this.setCustomValidity('')");
+                    } else {
+                        $("#veriTipiDiv").hide();
+                        $veriTipi.prop("required", false);
+                        $veriTipi.removeAttr("oninvalid oninput");
+                    }
+            }
+
+            @* Sayfa yüklenirken kontrol et *@
             toggleSecenekler();
 
-            // Değişiklik olunca çalıştır
+            @* Değişiklik olunca çalıştır *@
             $("#soruTipi").change(function () {
                 toggleSecenekler();
+                toggleVeriTipi(); // değişiklikte kontrol et
             });
 
-            // Seçenek ekleme işlemi
+            @*  Seçenek ekleme işlemi *@
             $("#secenekEkleBtn").click(function () {
                 $("#seceneklerListesi").append(`
                     <div class="input-group mb-2">
@@ -113,13 +132,26 @@
                 `);
             });
 
-            // Seçenek silme işlemi
+            @*  Seçenek silme işlemi *@
             $(document).on('click', '.secenekSilBtn', function () {
                 $(this).closest('.input-group').remove();
             });
 
-            // Form submit olduğunda tüm seçenekleri birleştir:
-            $("form").submit(function () {
+            @* Form submit olduğunda tüm seçenekleri birleştir: *@
+            $("form").submit(function (e) {
+
+                var selectedValue = parseInt($("#soruTipi").val());
+                if (selectedValue === 0) {
+                    var veriTipiVal = $("#VeriTipi").val();
+                    if (!veriTipiVal) {
+                        alert("Lütfen bir veri tipi seçiniz.");
+                        $("#VeriTipi").focus();
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+
+
                 var secenekler = [];
                 $(".secenekInput").each(function () {
                     var val = $(this).val().trim();
