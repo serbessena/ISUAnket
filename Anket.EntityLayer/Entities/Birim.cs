@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISUAnket.EntityLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace ISUAnket.EntityLayer.Entities
         public bool AktifMi { get; set; }=false;
 
         public List<Cevap> Cevaplar { get; set; }
+        public BirimEnum? MerkezSube { get; set; }
 
         [Display(Name ="Birim Kodu")]
         [StringLength(200)]

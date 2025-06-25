@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISUAnket.Business\ISUAnket.Business.csproj" />
+    <ProjectReference Include="..\ISUAnket.Sender\ISUAnket.Sender.csproj" />
+    <ProjectReference Include="..\ISUAnket.Service\ISUAnket.Service.csproj" />
   </ItemGroup>
 
 </Project>

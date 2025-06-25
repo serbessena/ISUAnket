@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ISUAnket.WEB", "ISUAnket.WE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISUAnket.Service", "ISUAnket.Service\ISUAnket.Service.csproj", "{55B6BE4A-6BE0-4CED-9CEB-82BEB908AAAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISUAnket.Sender", "ISUAnket.Sender\ISUAnket.Sender.csproj", "{27E6C60A-98FC-4616-B3A6-7729D927F0E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{55B6BE4A-6BE0-4CED-9CEB-82BEB908AAAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55B6BE4A-6BE0-4CED-9CEB-82BEB908AAAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55B6BE4A-6BE0-4CED-9CEB-82BEB908AAAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27E6C60A-98FC-4616-B3A6-7729D927F0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27E6C60A-98FC-4616-B3A6-7729D927F0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27E6C60A-98FC-4616-B3A6-7729D927F0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27E6C60A-98FC-4616-B3A6-7729D927F0E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
