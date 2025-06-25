@@ -21,6 +21,21 @@ namespace ISUAnket.Sender.ViewModel
         public string username { get; set; }
     }
 
+    public class SmsResponceSingleViewModel
+    {
+        public ResultSingleViewModel sendSmsResult { get; set; }
+    }
+    public class ResultSingleViewModel
+    {
+        public string ErrorCode { get; set; }
+        public string PacketId { get; set; }
+        public messageSingleId MessageIdList { get; set; }
+    }
+    public class messageSingleId
+    {
+        public string MessageId { get; set; }
+    }
+
     public class SmsResponceViewModel
     {
         public ResultViewModel sendSmsResult { get; set; }
@@ -29,13 +44,22 @@ namespace ISUAnket.Sender.ViewModel
     {
         public string ErrorCode { get; set; }
         public string PacketId { get; set; }
-        public List<string> MessageIdList { get; set; }
+        public messageId MessageIdList { get; set; }
+    }
+    public class messageId
+    {
+        public List<string> MessageId { get; set; }
     }
 
 
     public class personalMessage
     {
         public List<string> parameter { get; set; }
+    }
+    public class smsSendReturnViewModel
+    {
+        public string PacketId { get; set; }
+        public string MessageId { get; set; }
     }
 
     public class LinkViewModel

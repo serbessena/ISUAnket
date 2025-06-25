@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ISUAnket.Sender.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISUAnket.WEB.Controllers
@@ -10,9 +11,9 @@ namespace ISUAnket.WEB.Controllers
         {
             //personelList();
 
-            //smsGonder();
+            var paketId = smsGonder();
 
-            //smsGonderimDurum();
+            var sonuc = smsGonderimDurum(paketId, 3);
 
             return View();
         }
@@ -22,21 +23,38 @@ namespace ISUAnket.WEB.Controllers
             var Pesonellist = (List<ISUAnket.Service.ViewModels.PersonelSayilariView>)ISUAnket.Service.BYSSQL.SqlSorgu("01.01.02.10.04", 1);
         }
 
-        private void smsGonder()
+        private string smsGonder()
         {
-            var link = new ISUAnket.Sender.ViewModel.LinkViewModel
+            var link1 = new ISUAnket.Sender.ViewModel.LinkViewModel
             {
                 Cep = "5366163606",
-                Link = "Deneme"
+                Link = "Behlül Öztürk"
             };
 
-            var paketId = ISUAnket.Sender.SmsSender.smsOlustur(new List<ISUAnket.Sender.ViewModel.LinkViewModel> { link });
+            var link2 = new ISUAnket.Sender.ViewModel.LinkViewModel
+            {
+                Cep = "5469547258",
+                Link = "Sena Duru"
+            };
+
+            var link3 = new ISUAnket.Sender.ViewModel.LinkViewModel
+            {
+                Cep = "5308217721",
+                Link = "Ayça Bayrak"
+            };
+
+            var sonuc = ISUAnket.Sender.SmsSender.smsOlustur(new List<ISUAnket.Sender.ViewModel.LinkViewModel> { link1, link2, link3 });
+
+            return sonuc.FirstOrDefault().PacketId;
         }
 
 
-        private void smsGonderimDurum()
+        private List<smsDurumReturnViewModel> smsGonderimDurum(string paketId, int count)
         {
 
+            var sonuc = ISUAnket.Sender.SmsSender.smsDurumKontrol(paketId, count);
+
+            return sonuc;
         }
     }
 }
