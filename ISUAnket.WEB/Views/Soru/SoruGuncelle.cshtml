@@ -39,7 +39,7 @@
             </div>
 
             @*  Veri Tipi  *@
-            <div class="mb-3">
+            <div class="mb-3" id="veriTipiDiv" style="display:none;">
                 <label asp-for="VeriTipi" class="form-label fw-semibold"></label>
                 <select asp-for="VeriTipi" asp-items="Html.GetEnumSelectList<VeriTipiEnum>()" class="form-select">
                     <option value="">Seçiniz</option>
@@ -101,15 +101,28 @@
                 }
             }
 
-            // Sayfa yüklenince kontrol et
-            toggleSecenekler();
+            @* veri tipi fonksiyonu *@
+            function toggleVeriTipi() {
+                var selectedValue = parseInt($("#soruTipi").val());
+                if (selectedValue === 0) { // Tek Satır Metin
+                    $("#veriTipiDiv").show();
+                } else {
+                    $("#veriTipiDiv").hide();
+                }
+            }
 
-            // Tip değişirse kontrol et
+            @* Sayfa yüklenince kontrol et *@
+            toggleSecenekler();
+            toggleVeriTipi();
+
+
+            @* Tip değişirse kontrol et *@
             $("#soruTipi").change(function () {
                 toggleSecenekler();
+                toggleVeriTipi();
             });
 
-            // Sayfa yüklenince varsa mevcut seçenekleri doldur:
+            @* Sayfa yüklenince varsa mevcut seçenekleri doldur *@
             var mevcutSecenekler = '@Model.SoruSecenekleri';
             if (mevcutSecenekler) {
                 var secenekDizisi = mevcutSecenekler.split(',');
@@ -123,7 +136,7 @@
                 });
             }
 
-            // Seçenek ekleme işlemi
+            @* Seçenek ekleme işlemi *@
             $("#secenekEkleBtn").click(function () {
                 $("#seceneklerListesi").append(`
                             <div class="input-group mb-2">
@@ -133,7 +146,7 @@
                         `);
             });
 
-            // Seçenek silme işlemi
+            @* Seçenek silme işlemi *@
             $(document).on('click', '.secenekSilBtn', function () {
                 $(this).closest('.input-group').remove();
             });

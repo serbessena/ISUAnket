@@ -3,6 +3,7 @@ using System;
 using ISUAnket.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ISUAnket.DataAccess.Migrations
 {
     [DbContext(typeof(ISUAnketContext))]
-    partial class ISUAnketContextModelSnapshot : ModelSnapshot
+    [Migration("20250625070402_Soru tablosundaki VeriTipiEnum kolonunun zorunluluğunu kaldır")]
+    partial class SorutablosundakiVeriTipiEnumkolonununzorunluluğunukaldır
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,9 +95,6 @@ namespace ISUAnket.DataAccess.Migrations
                     b.Property<string>("BirimKod")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
-
-                    b.Property<int?>("MerkezSube")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

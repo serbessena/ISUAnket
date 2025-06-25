@@ -21,7 +21,7 @@ namespace ISUAnket.EntityLayer.Entities
         public SoruTipiEnum SoruTipi { get; set; }
 
         [Display(Name = "Veri Tipi")]
-        public VeriTipiEnum VeriTipi { get; set; }
+        public VeriTipiEnum? VeriTipi { get; set; }
 
         [Display(Name ="Seçenekler")]
         public string? SoruSecenekleri { get; set; }

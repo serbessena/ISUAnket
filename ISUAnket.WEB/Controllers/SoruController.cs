@@ -82,6 +82,11 @@ namespace ISUAnket.WEB.Controllers
 
             #endregion
 
+            if (model.SoruTipi == SoruTipiEnum.TekSatırMetin && model.VeriTipi == null)
+            {
+                ModelState.AddModelError("VeriTipi", "Lütfen bir veri tipi seçiniz.");
+            }
+
 
             //model.OlusturanKullaniciId = kullaniciId.Value; //Session ile giriş işlemlerinde kullanılır
             model.OlusturanKullaniciId = kullaniciId;
@@ -140,6 +145,15 @@ namespace ISUAnket.WEB.Controllers
                 return NotFound("Soru bulunamadı.");
             }
 
+            #region VeriTipi kontrolü
+
+            if (model.SoruTipi==SoruTipiEnum.TekSatırMetin && model.VeriTipi==null)
+            {
+                ModelState.AddModelError("VeriTipi", "Lütfen bir veri tipi seçiniz!");
+            }
+
+            #endregion
+
 
             #region Anket durumuna göre Soru güncelleme kontrolü
 
@@ -177,6 +191,8 @@ namespace ISUAnket.WEB.Controllers
             //mevcutSoru.DuzenleyenKullaniciId = duzenleyenId.Value; //Session bazlı giriş için kullanılır
             mevcutSoru.DuzenleyenKullaniciId = duzenleyenId;
             mevcutSoru.DuzenlenmeTarihi = DateTime.Now;
+            mevcutSoru.SoruTipi = model.SoruTipi;
+            mevcutSoru.VeriTipi = model.VeriTipi;
             mevcutSoru.SoruSecenekleri = model.SoruSecenekleri;
 
             await _soruService.UpdateServiceAsync(mevcutSoru);
